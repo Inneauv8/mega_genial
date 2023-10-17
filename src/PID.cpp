@@ -1,11 +1,11 @@
 /**************************************************************************************************
 Nom du fichier : PID.cpp
-Auteur : Samuel Hamelin
+Auteur : Samuel Hamelin et Guillaume Béland
 Date de création : 2023/10/16
 
 Description : Fichier du PID
               
-Notes : 
+Notes : Utilise un struct pour retourner plusieurs valeurs
 
 Modifications : 
 
@@ -23,11 +23,21 @@ Modifications :
 //  CONSTANTES
 // *************************************************************************************************
 /* VIDE */
+float pid = 0 ;
 
 // *************************************************************************************************
 //  FONCTIONS LOCALES
 // *************************************************************************************************
-/* VIDE */
+float PID(float sp, float pv, float kp, float ki, float kd, float dt)
+{
+    
+    float p = sp-pv;
+    float i =+ ki*(p*dt);
+    float d = (p-pid)/dt;
+    pid = kp*p+i+kd*d;
+    return pid;
+    
+}
 
 // *************************************************************************************************
 //  STRUCTURES ET UNIONS

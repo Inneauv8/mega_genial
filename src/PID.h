@@ -1,7 +1,7 @@
 /****************************************************************************************
 Nom du fichier : PID.h
-Auteur :                   
-Date de création : 
+Auteur :  Guillaume Béland et Samuel Hamelin                 
+Date de création : 17/10/2023
   
 ****************************************************************************************/
 #ifndef PID_H
@@ -15,7 +15,7 @@ Date de création :
 // *************************************************************************************************
 //  PROTOTYPE DE FONCTIONS
 // *************************************************************************************************
-float PID(float sp, float pv, float kp, float ki, float kd, float dt);
+float calculPID(float sp, float pv, float kp, float ki, float kd, float dt);
 
 // *************************************************************************************************
 //  STRUCTURES ET UNIONS
