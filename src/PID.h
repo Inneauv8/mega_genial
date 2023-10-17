@@ -15,7 +15,7 @@ Date de création : 17/10/2023
 // *************************************************************************************************
 //  PROTOTYPE DE FONCTIONS
 // *************************************************************************************************
-float calculPID(float sp, float pv, float kp, float ki, float kd, float dt);
+void calculPID(structPID *incomingValues);
 
 // *************************************************************************************************
 //  STRUCTURES ET UNIONS
@@ -26,7 +26,6 @@ struct structPID
     float Ki; // Constante intégrale
     float Kd; // Constante dérivée
     float Ti; // Temps initial
-    float Tr; // Temps réel
     float Sp; // Set Point (Valeur voulue)
     float Pv; // Point Value (Valeur réelle)
     float p; // Valeur proportionnelle

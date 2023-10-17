@@ -23,21 +23,11 @@ Modifications :
 //  CONSTANTES
 // *************************************************************************************************
 /* VIDE */
-float pid = 0 ;
 
 // *************************************************************************************************
 //  FONCTIONS LOCALES
 // *************************************************************************************************
-float PID(float sp, float pv, float kp, float ki, float kd, float dt)
-{
-    
-    float p = sp-pv;
-    float i =+ ki*(p*dt);
-    float d = (p-pid)/dt;
-    pid = kp*p+i+kd*d;
-    return pid;
-    
-}
+/* VIDE */
 
 // *************************************************************************************************
 //  STRUCTURES ET UNIONS
@@ -54,3 +44,13 @@ float PID(float sp, float pv, float kp, float ki, float kd, float dt)
  * faire fonctionner le PID, tout en restant réutiliseable 
  * @author 
  */
+void calculPID(structPID *incomingValues)
+{
+    float error = incomingValues->Sp - incomingValues->Pv;
+    float dt = millis() - incomingValues->Ti;
+    incomingValues->p = incomingValues->Kp * error;
+    incomingValues->i += incomingValues->Ki * (error*dt);
+    incomingValues->d = incomingValues->Kd * (error - incomingValues->Out) / dt;
+    incomingValues->Out = incomingValues->p + incomingValues->i + incomingValues->d;
+    incomingValues->Ti = millis();
+}
