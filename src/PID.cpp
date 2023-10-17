@@ -17,6 +17,7 @@ Modifications :
 
 #include <Arduino.h>
 #include <LibRobus.h>
+#include <PID.h>
 
 // *************************************************************************************************
 //  CONSTANTES
