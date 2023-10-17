@@ -16,7 +16,7 @@ Date de création : 17/10/2023
 //  PROTOTYPE DE FONCTIONS
 // *************************************************************************************************
 
-float PID(float sp, float pv, float kp, float ki, float kd, float dt);
+float calculPID(float sp, float pv, float kp, float ki, float kd, float dt);
 
 // *************************************************************************************************
 //  STRUCTURES ET UNIONS
