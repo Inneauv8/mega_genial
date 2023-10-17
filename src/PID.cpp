@@ -1,9 +1,9 @@
 /**************************************************************************************************
-Nom du fichier : main.cpp
-Auteur : Mathieu Durand
+Nom du fichier : PID.cpp
+Auteur : Samuel Hamelin
 Date de création : 2023/10/16
 
-Description : Fichier principale Arduino
+Description : Fichier du PID
               
 Notes : 
 
@@ -40,22 +40,5 @@ Modifications :
 
 /**
  * @brief Initialisation du programme.
- * @author Mathieu Durand
+ * @author 
  */
-void setup()
-{   
-    BoardInit();
-    Serial.begin(115200); // 115200 ou 9600
-    
-    // Décommenter si le programme a absolument besoin du serial.
-    //while(!Serial);
-}
-
-/**
- * @brief Boucle du programme.
- * @author Mathieu Durand
-*/
-void loop()
-{
-    
-}
