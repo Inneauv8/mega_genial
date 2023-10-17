@@ -1,7 +1,7 @@
 /****************************************************************************************
 Nom du fichier : PID.h
-Auteur :                   
-Date de création : 
+Auteur :  Guillaume Béland et Samuel Hamelin                 
+Date de création : 17/10/2023
   
 ****************************************************************************************/
 #ifndef PID_H
@@ -15,23 +15,13 @@ Date de création :
 // *************************************************************************************************
 //  PROTOTYPE DE FONCTIONS
 // *************************************************************************************************
-float pid = 0;
 
-float PID(float sp, float pv, float kp, float ki, float kd, float dt)
-{
-    
-    float p = sp-pv;
-    float i =+ ki*(p*dt);
-    float d = (p-pid)/dt;
-    pid = kp*p+i+kd*d;
-    return pid;
-    
-}
+float PID(float sp, float pv, float kp, float ki, float kd, float dt);
 
 // *************************************************************************************************
 //  STRUCTURES ET UNIONS
 // *************************************************************************************************
-/* VIDE */
+
 
 // *************************************************************************************************
 // VARIABLES GLOBALES
@@ -42,5 +32,7 @@ float PID(float sp, float pv, float kp, float ki, float kd, float dt)
 // VARIABLES LOCALES
 // *************************************************************************************************
 /* VIDE */
+
+
 
 #endif
