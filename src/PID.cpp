@@ -40,8 +40,7 @@ Modifications :
 /* VIDE */
 
 /**
- * @brief Fonction de contrôle d'un PID. La fonction prends toutes les valeurs nécessaires pour 
- * faire fonctionner le PID, tout en restant réutiliseable 
+ * @brief Initialisation du programme.
  * @author 
  */
 void calculPID(structPID *incomingValues)
