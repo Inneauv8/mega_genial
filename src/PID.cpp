@@ -23,19 +23,19 @@ Modifications :
 //  CONSTANTES
 // *************************************************************************************************
 /* VIDE */
-float pid = 0 ;
+struct structPID valeursPID;
 
 // *************************************************************************************************
 //  FONCTIONS LOCALES
 // *************************************************************************************************
-float PID(float sp, float pv, float kp, float ki, float kd, float dt)
+struct calculPID(valeursPID)
 {
     
-    float p = sp-pv;
-    float i =+ ki*(p*dt);
-    float d = (p-pid)/dt;
-    pid = kp*p+i+kd*d;
-    return pid;
+    float valeursPID.p = valeursPID.Sp-valeursPID.Pv;
+    float valeursPID.i =+ valeursPID.ki*(valeursPID.p*(valeursPID.Tr-valeursPID.Ti));
+    float valeursPID.d = (valeursPID.p-valeursPID.Out)/(valeursPID.Tr-valeursPID.Ti);
+    valeursPID.Out = valeursPID.kp*valeursPID.p+valeursPID.i+valeursPID.kd*valeursPID.d;
+    return 0;
     
 }
 
@@ -50,7 +50,6 @@ float PID(float sp, float pv, float kp, float ki, float kd, float dt)
 /* VIDE */
 
 /**
- * @brief Fonction de contrôle d'un PID. La fonction prends toutes les valeurs nécessaires pour 
- * faire fonctionner le PID, tout en restant réutiliseable 
+ * @brief Initialisation du programme.
  * @author 
  */
