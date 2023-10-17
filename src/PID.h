@@ -15,7 +15,18 @@ Date de création :
 // *************************************************************************************************
 //  PROTOTYPE DE FONCTIONS
 // *************************************************************************************************
-/* VIDE */
+float pid = 0;
+
+float PID(float sp, float pv, float kp, float ki, float kd, float dt)
+{
+    
+    float p = sp-pv;
+    float i =+ ki*(p*dt);
+    float d = (p-pid)/dt;
+    pid = kp*p+i+kd*d;
+    return pid;
+    
+}
 
 // *************************************************************************************************
 //  STRUCTURES ET UNIONS
