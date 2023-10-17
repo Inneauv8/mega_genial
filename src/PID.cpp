@@ -40,6 +40,7 @@ Modifications :
 /* VIDE */
 
 /**
- * @brief Initialisation du programme.
+ * @brief Fonction de contrôle d'un PID. La fonction prends toutes les valeurs nécessaires pour 
+ * faire fonctionner le PID, tout en restant réutiliseable 
  * @author 
  */
