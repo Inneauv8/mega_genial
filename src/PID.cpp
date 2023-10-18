@@ -42,7 +42,8 @@ namespace PID {
   
   /**
    * @brief Initialisation du programme.
-   * @author 
+   *
+   * @param incomingValues PID values
    */
   void calculPID(structPID *incomingValues)
   {
