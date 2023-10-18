@@ -19,37 +19,39 @@ Modifications :
 #include <LibRobus.h>
 #include <PID.h>
 
-// *************************************************************************************************
-//  CONSTANTES
-// *************************************************************************************************
-/* VIDE */
-
-// *************************************************************************************************
-//  FONCTIONS LOCALES
-// *************************************************************************************************
-/* VIDE */
-
-// *************************************************************************************************
-//  STRUCTURES ET UNIONS
-// *************************************************************************************************
-/* VIDE */
-
-// *************************************************************************************************
-// VARIABLES GLOBALES
-// *************************************************************************************************
-/* VIDE */
-
-/**
- * @brief Initialisation du programme.
- * @author 
- */
-void calculPID(structPID *incomingValues)
-{
-    float error = incomingValues->Sp - incomingValues->Pv;
-    float dt = millis() - incomingValues->Ti;
-    incomingValues->p = incomingValues->Kp * error;
-    incomingValues->i += incomingValues->Ki * (error*dt);
-    incomingValues->d = incomingValues->Kd * (error - incomingValues->Out) / dt;
-    incomingValues->Out = incomingValues->p + incomingValues->i + incomingValues->d;
-    incomingValues->Ti = millis();
+namespace PID {
+  // *************************************************************************************************
+  //  CONSTANTES
+  // *************************************************************************************************
+  /* VIDE */
+  
+  // *************************************************************************************************
+  //  FONCTIONS LOCALES
+  // *************************************************************************************************
+  /* VIDE */
+  
+  // *************************************************************************************************
+  //  STRUCTURES ET UNIONS
+  // *************************************************************************************************
+  /* VIDE */
+  
+  // *************************************************************************************************
+  // VARIABLES GLOBALES
+  // *************************************************************************************************
+  /* VIDE */
+  
+  /**
+   * @brief Initialisation du programme.
+   * @author 
+   */
+  void calculPID(structPID *incomingValues)
+  {
+      float error = incomingValues->Sp - incomingValues->Pv;
+      float dt = millis() - incomingValues->Ti;
+      incomingValues->p = incomingValues->Kp * error;
+      incomingValues->i += incomingValues->Ki * (error*dt);
+      incomingValues->d = incomingValues->Kd * (error - incomingValues->Out) / dt;
+      incomingValues->Out = incomingValues->p + incomingValues->i + incomingValues->d;
+      incomingValues->Ti = millis();
+  }
 }
