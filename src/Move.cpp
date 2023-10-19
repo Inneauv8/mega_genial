@@ -19,13 +19,11 @@ Modifications :
 #include <LibRobus.h>
 #include "Move.h"
 
-namespace PID {
+namespace MOVE {
   // *************************************************************************************************
   //  CONSTANTES
   // *************************************************************************************************
   /* VIDE */
-  unsigned long delai = 0;
-  float speedMotor = 0;
 
   // dimensions de la piste: 16x10 pieds, donc une case en x = 5.333 pouces et une case en y = 10.909 pouces
   char parcours[11][36] = {
@@ -63,7 +61,7 @@ namespace PID {
   /**
    * @brief Calcul la valeur du PID
    *
-   * @param valeursPID PID values
+   * @param incomingValues PID values
    */
   void calculPID(valeursPID *incomingValues)
   {
@@ -85,21 +83,45 @@ namespace PID {
   {
     Distance.G = pulseToDist*float(ENCODER_Read(0));
     Distance.D = pulseToDist*float(ENCODER_Read(1));
-  }
+      }
 
   float distanceMoyenne()
   {
     return (Distance.D+Distance.G)/2;
   }
 
-  float speed(bool motor)
-  {
-    static float delai = 0;
+  float updatePos(){
+
+    static float oldPulseG = 0;
+    static float oldPulseD = 0;
+    float pulseG = ENCODER_Read(0) - oldPulseG;
+    float pulseD = ENCODER_Read(1) - oldPulseD;
+    float posRatio = pulseG/pulseD;
+    
+    float radius = ((diametreRobot * posRatio)/(1-posRatio));
+    float radiusRobot = radius + diametreRobot/2;
+    float orientation = 360 * pulseG/(2*M_PI*radius) + 90;
+    float posX = radiusRobot - (radiusRobot*cos(orientation));
+    float posY = radiusRobot * sin(orientation);
+
+    oldPulseG = pulseG;
+    oldPulseD = pulseD;
+    
+  }
+
+  float speed(bool motor){
+    
+    static float delai = 0.0;
+    static float speedMotor = 0.0;
+    static float oldPulse = 0.0;
     if (millis() - delai > 10){
       
-      float speedMotor = pulseToDist*float(ENCODER_ReadReset(motor))/(millis() - delai);
+      speedMotor = pulseToDist*float(ENCODER_Read(motor)-oldPulse)/float(millis() - delai);
       delai = millis();
+      oldPulse = ENCODER_Read(motor);
     }
     return speedMotor;
   }
+
+ 
 }
