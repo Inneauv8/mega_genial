@@ -19,7 +19,7 @@ Modifications :
 #include <LibRobus.h>
 #include "Move.h"
 
-namespace MOVE {
+//namespace MOVE {
   // *************************************************************************************************
   //  CONSTANTES
   // *************************************************************************************************
@@ -41,7 +41,7 @@ namespace MOVE {
   };
 
   //position de départ du robot (x: 4.5 po ; y : 7.5 po)
-  float startPos[] = {{int(8.24175)}, {int(10.12601)}};
+  float startPos[] = {int(8.24175), int(10.12601)};
     
   // *************************************************************************************************
   //  FONCTIONS LOCALES
@@ -79,49 +79,95 @@ namespace MOVE {
    *
    * @param incomingValues PID values
    */
-  void valeursDistance getDistance()
+  /*void valeursDistance getDistance()
   {
     Distance.G = pulseToDist*float(ENCODER_Read(0));
     Distance.D = pulseToDist*float(ENCODER_Read(1));
-      }
+  }*/
 
   float distanceMoyenne()
   {
     return (Distance.D+Distance.G)/2;
   }
 
-  float updatePos(){
+  float updatePos()
+  {
 
-    static float oldPulseG = 0;
-    static float oldPulseD = 0;
+    static float oldPulseG = 0.0;
+    static float oldPulseD = 0.0;
     float pulseG = ENCODER_Read(0) - oldPulseG;
     float pulseD = ENCODER_Read(1) - oldPulseD;
     float posRatio = pulseG/pulseD;
     
-    float radius = ((diametreRobot * posRatio)/(1-posRatio));
-    float radiusRobot = radius + diametreRobot/2;
-    float orientation = 360 * pulseG/(2*M_PI*radius) + 90;
-    float posX = radiusRobot - (radiusRobot*cos(orientation));
-    float posY = radiusRobot * sin(orientation);
+    float radius = ((wheelBaseDiameter * posRatio)/(1-posRatio));
+    float radiusRobot = radius + wheelBaseDiameter/2;
+    position.orientation = pulseG/radius + M_PI/2;
+    position.x = radiusRobot - (radiusRobot*cos(position.orientation));
+    position.y = radiusRobot * sin(position.orientation);
 
     oldPulseG = pulseG;
     oldPulseD = pulseD;
     
   }
 
-  float speed(bool motor){
+  float speedG()
+  {
     
-    static float delai = 0.0;
+    static float past = 0.0;
     static float speedMotor = 0.0;
     static float oldPulse = 0.0;
-    if (millis() - delai > 10){
-      
-      speedMotor = pulseToDist*float(ENCODER_Read(motor)-oldPulse)/float(millis() - delai);
-      delai = millis();
-      oldPulse = ENCODER_Read(motor);
-    }
+    float present = millis();
+    float pulse = ENCODER_Read(0);
+    speedMotor = 1000.0 * pulseToDist*float(pulse-oldPulse)/float(present - past);
+  
+    past = present;
+    oldPulse = pulse;
+    
     return speedMotor;
   }
 
+float speedD()
+  {
+    
+    static float past = 0.0;
+    static float speedMotor = 0.0;
+    static float oldPulse = 0.0;
+    float present = millis();
+    float pulse = ENCODER_Read(1);
+    speedMotor = 1000.0*pulseToDist*float(pulse-oldPulse)/float(present - past);
+    
+    past = present;
+    oldPulse = pulse;
+    
+    return speedMotor;
+  }
  
+//}
+
+float vitesse = 0.3;
+bool target = 0.0;
+struct valeursPID pid = {};
+
+
+void setup(){
+  BoardInit();
+  Serial.begin(9600);
+  pid.Kp = 0.1;
+}
+
+void loop(){
+
+  /*if (ROBUS_IsBumper(0)){
+    target = !target;
+  }
+  pid.Sp = target;
+  calculPID(&pid);
+  MOTOR_SetSpeed(0, vitesse + pid.Out);
+  MOTOR_SetSpeed(1, vitesse + pid.Out);*/
+  MOTOR_SetSpeed(0, vitesse);
+  MOTOR_SetSpeed(1, vitesse);
+  Serial.print("Moteur gauche : ");
+  Serial.print(speedG());
+  Serial.print("        Moteur droite : ");
+  Serial.println(speedD());
 }

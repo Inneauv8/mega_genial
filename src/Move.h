@@ -6,29 +6,31 @@ Date de création : 17/10/2023
 ****************************************************************************************/
 #ifndef MOVE_H
 #define MOVE_H
-#include <math.h>
 
-namespace MOVE {
+
+//namespace MOVE {
   // *************************************************************************************************
   //  CONSTANTES
   // *************************************************************************************************
   /* VIDE */
-  #define diametreRobot 8.0
-  #define diametreRoue 3.0
+  #define wheelBaseDiameter 7.480315
+  #define wheelDiameter 2.992126
 
-  float pulseToDist = M_PI*diametreRoue/3200.0;
+
+  float pulseToDist = M_PI*wheelDiameter/3200.0;
 
   // *************************************************************************************************
   //  STRUCTURES ET UNIONS
   // *************************************************************************************************
   struct valeursPID 
   {
+      valeursPID() : Kp(0.0), Ki(0.0), Kd(0.0), Ti(0.0), Sp(0.0), Pv(0.0) {}
       float Kp; // Constante proportionnelle
       float Ki; // Constante intégrale
       float Kd; // Constante dérivée
       float Ti; // Temps initial
       float Sp; // Set Point (Valeur voulue)
-      float Pv; // Point Value (Valeur réelle)
+      float Pv; // Process Value (Valeur réelle)
       float p; // Valeur proportionnelle
       float i; // Valeur intégrale
       float d; // Valeur dérivée
@@ -40,6 +42,12 @@ namespace MOVE {
     float D;
   } Distance;
   
+  struct posRobot {
+      float x;
+      float y;
+      float orientation;
+
+  } position;
   
   // *************************************************************************************************
   //  PROTOTYPE DE FONCTIONS
@@ -49,7 +57,7 @@ namespace MOVE {
   
   valeursDistance getDistance();
 
-  float vitesse(bool moteur);
+  float speed(bool moteur);
 
   float distanceMoyenne();
   
@@ -62,6 +70,6 @@ namespace MOVE {
   // VARIABLES LOCALES
   // *************************************************************************************************
   /* VIDE */
-}
+//}
 
 #endif
