@@ -19,7 +19,7 @@ Modifications :
 #include <LibRobus.h>
 #include "Move.h"
 
-//namespace MOVE {
+namespace MOVE {
   // *************************************************************************************************
   //  CONSTANTES
   // *************************************************************************************************
@@ -141,33 +141,32 @@ float speedD()
     
     return speedMotor;
   }
- 
-//}
 
-float vitesse = 0.3;
-bool target = 0.0;
-struct valeursPID pid = {};
-
-
-void setup(){
-  BoardInit();
-  Serial.begin(9600);
-  pid.Kp = 0.1;
-}
-
-void loop(){
-
-  /*if (ROBUS_IsBumper(0)){
-    target = !target;
+  float vitesse = 0.3;
+  bool target = 0.0;
+  struct valeursPID pid = {};
+  
+  
+  void setup(){
+    BoardInit();
+    Serial.begin(9600);
+    pid.Kp = 0.1;
   }
-  pid.Sp = target;
-  calculPID(&pid);
-  MOTOR_SetSpeed(0, vitesse + pid.Out);
-  MOTOR_SetSpeed(1, vitesse + pid.Out);*/
-  MOTOR_SetSpeed(0, vitesse);
-  MOTOR_SetSpeed(1, vitesse);
-  Serial.print("Moteur gauche : ");
-  Serial.print(speedG());
-  Serial.print("        Moteur droite : ");
-  Serial.println(speedD());
+  
+  void loop(){
+  
+    /*if (ROBUS_IsBumper(0)){
+      target = !target;
+    }
+    pid.Sp = target;
+    calculPID(&pid);
+    MOTOR_SetSpeed(0, vitesse + pid.Out);
+    MOTOR_SetSpeed(1, vitesse + pid.Out);*/
+    MOTOR_SetSpeed(0, vitesse);
+    MOTOR_SetSpeed(1, vitesse);
+    Serial.print("Moteur gauche : ");
+    Serial.print(speedG());
+    Serial.print("        Moteur droite : ");
+    Serial.println(speedD());
+  }
 }
