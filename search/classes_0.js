@@ -1,4 +1,5 @@
 var searchData=
 [
-  ['structpid_0',['structPID',['../d0/d6b/structPID_1_1structPID.html',1,'PID']]]
+  ['valeursdistance_0',['valeursDistance',['../d4/d5f/structPID_1_1valeursDistance.html',1,'PID']]],
+  ['valeurspid_1',['valeursPID',['../de/db6/structPID_1_1valeursPID.html',1,'PID']]]
 ];
