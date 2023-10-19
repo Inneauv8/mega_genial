@@ -38,7 +38,7 @@ namespace MOVE {
   struct valeursDistance {
     float G;
     float D;
-  };
+  } Distance;
   
   
   // *************************************************************************************************

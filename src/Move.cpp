@@ -17,7 +17,7 @@ Modifications :
 
 #include <Arduino.h>
 #include <LibRobus.h>
-#include "PID.h"
+#include "Move.h"
 
 namespace PID {
   // *************************************************************************************************
@@ -63,7 +63,7 @@ namespace PID {
   /**
    * @brief Calcul la valeur du PID
    *
-   * @param incomingValues PID values
+   * @param valeursPID PID values
    */
   void calculPID(valeursPID *incomingValues)
   {
@@ -81,25 +81,23 @@ namespace PID {
    *
    * @param incomingValues PID values
    */
-  valeursDistance getDistance()
+  void valeursDistance getDistance()
   {
-    valeursDistance Distance;
     Distance.G = pulseToDist*float(ENCODER_Read(0));
     Distance.D = pulseToDist*float(ENCODER_Read(1));
-    //return Distance; //Pas besoin de return
   }
 
-  float distanceMoyenne(){
-
-    PID::valeursDistance Distance = getDistance();
+  float distanceMoyenne()
+  {
     return (Distance.D+Distance.G)/2;
   }
 
-  float speed(bool motor){
-
+  float speed(bool motor)
+  {
+    static float delai = 0;
     if (millis() - delai > 10){
       
-      speedMotor = pulseToDist*float(ENCODER_ReadReset(motor))/(millis() - delai);
+      float speedMotor = pulseToDist*float(ENCODER_ReadReset(motor))/(millis() - delai);
       delai = millis();
     }
     return speedMotor;
