@@ -25,7 +25,26 @@ namespace PID {
   // *************************************************************************************************
   /* VIDE */
   unsigned long delai = 0;
-  float speeeeed = 0;
+  float speedMotor = 0;
+
+  // dimensions de la piste: 16x10 pieds, donc une case en x = 5.333 pouces et une case en y = 10.909 pouces
+  char parcours[11][36] = {
+    {"     _____________________________ "},
+    {"    / __________________________  |"},
+    {"   / / _____________________ \\  | |"},
+    {"  / / / ___________________ \\ \\ | |"},
+    {" / / / / ___________       \\ \\ \\| |"},
+    {"|        |          \\    /| | | | |"},
+    {"|        |___________\\  /_| | | | |"},
+    { "\\ \\ \\ \\_____________ _____/ / /| |"},
+    {"  \\ \\ \\______________|______/ / | |"},
+    {"   \\ \\_______________|_______/__| |"},
+    {"    \\________________|____________|"}
+  };
+
+  //position de départ du robot (x: 4.5 po ; y : 7.5 po)
+  float startPos[] = {{int(8.24175)}, {int(10.12601)}};
+    
   // *************************************************************************************************
   //  FONCTIONS LOCALES
   // *************************************************************************************************
@@ -72,13 +91,13 @@ namespace PID {
     return (Distance.D+Distance.G)/2;
   }
 
-  float vitesse(bool moteur){
+  float speed(bool motor){
 
     if (millis() - delai > 10){
       
-      speeeeed = pulseToDist*float(ENCODER_ReadReset(moteur))/(millis() - delai);
+      speedMotor = pulseToDist*float(ENCODER_ReadReset(motor))/(millis() - delai);
       delai = millis();
     }
-    return speeeeed;
+    return speedMotor;
   }
 }
