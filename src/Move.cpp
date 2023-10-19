@@ -61,7 +61,7 @@ namespace PID {
   /* VIDE */
   
   /**
-   * @brief Initialisation du programme.
+   * @brief Calcul la valeur du PID
    *
    * @param incomingValues PID values
    */
@@ -76,13 +76,17 @@ namespace PID {
       incomingValues->Ti = millis();
       
   }
-
-  valeursDistance getDistance(){
-  //retourne la distance parcourue en pouces par le moteur gauche
-  PID::valeursDistance Distance;
-  Distance.G = pulseToDist*float(ENCODER_Read(0));
-  Distance.D = pulseToDist*float(ENCODER_Read(1));
-  return Distance;
+ /**
+   * @brief Retourne les distances parcourues en pouces par les moteurs
+   *
+   * @param incomingValues PID values
+   */
+  valeursDistance getDistance()
+  {
+    valeursDistance Distance;
+    Distance.G = pulseToDist*float(ENCODER_Read(0));
+    Distance.D = pulseToDist*float(ENCODER_Read(1));
+    //return Distance; //Pas besoin de return
   }
 
   float distanceMoyenne(){
