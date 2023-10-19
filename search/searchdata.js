@@ -3,7 +3,7 @@ var indexSectionsWithContent =
   0: "cdgikopstv",
   1: "v",
   2: "p",
-  3: "cdgv",
+  3: "cdgsv",
   4: "dgikopst"
 };
 

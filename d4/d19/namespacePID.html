@@ -93,6 +93,8 @@ Fonctions</h2></td></tr>
 <tr class="separator:a23458f570a1fe85f742bcdbe445339ab"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac5ceafaace92d557e31bfee2b954677d"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d4/d19/namespacePID.html#ac5ceafaace92d557e31bfee2b954677d">distanceMoyenne</a> ()</td></tr>
 <tr class="separator:ac5ceafaace92d557e31bfee2b954677d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a61baba67449cb4df1777215e3c42b72d"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d4/d19/namespacePID.html#a61baba67449cb4df1777215e3c42b72d">speed</a> (bool motor)</td></tr>
+<tr class="separator:a61baba67449cb4df1777215e3c42b72d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aba029011e20a99aacec5ebc118fb2fee"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d4/d19/namespacePID.html#aba029011e20a99aacec5ebc118fb2fee">vitesse</a> (bool moteur)</td></tr>
 <tr class="separator:aba029011e20a99aacec5ebc118fb2fee"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
@@ -100,8 +102,12 @@ Fonctions</h2></td></tr>
 Variables</h2></td></tr>
 <tr class="memitem:a1919b39f0b9c9cc48d3f491c41d60de8"><td class="memItemLeft" align="right" valign="top">unsigned long&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d4/d19/namespacePID.html#a1919b39f0b9c9cc48d3f491c41d60de8">delai</a> = 0</td></tr>
 <tr class="separator:a1919b39f0b9c9cc48d3f491c41d60de8"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a30de88b0ba95692edc18e68fa0accf5a"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d4/d19/namespacePID.html#a30de88b0ba95692edc18e68fa0accf5a">speeeeed</a> = 0</td></tr>
-<tr class="separator:a30de88b0ba95692edc18e68fa0accf5a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad3e5ab42d6917a764ca92980658cb903"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d4/d19/namespacePID.html#ad3e5ab42d6917a764ca92980658cb903">speedMotor</a> = 0</td></tr>
+<tr class="separator:ad3e5ab42d6917a764ca92980658cb903"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abd6c2219798413b22e9cfee588715288"><td class="memItemLeft" align="right" valign="top">char&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d4/d19/namespacePID.html#abd6c2219798413b22e9cfee588715288">parcours</a> [11][36]</td></tr>
+<tr class="separator:abd6c2219798413b22e9cfee588715288"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a07261d02429f3d7659640f8cee064b32"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d4/d19/namespacePID.html#a07261d02429f3d7659640f8cee064b32">startPos</a> [] = {{int(8.24175)}, {int(10.12601)}}</td></tr>
+<tr class="separator:a07261d02429f3d7659640f8cee064b32"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3a8f8a199ce0ed6badb7b90693cf7bd8"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d4/d19/namespacePID.html#a3a8f8a199ce0ed6badb7b90693cf7bd8">pulseToDist</a> = M_PI*diametreRoue/3200.0</td></tr>
 <tr class="separator:a3a8f8a199ce0ed6badb7b90693cf7bd8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
@@ -166,6 +172,24 @@ Variables</h2></td></tr>
 
 </div>
 </div>
+<a id="a61baba67449cb4df1777215e3c42b72d" name="a61baba67449cb4df1777215e3c42b72d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a61baba67449cb4df1777215e3c42b72d">&#9670;&#160;</a></span>speed()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">float PID::speed </td>
+          <td>(</td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>motor</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
 <a id="aba029011e20a99aacec5ebc118fb2fee" name="aba029011e20a99aacec5ebc118fb2fee"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#aba029011e20a99aacec5ebc118fb2fee">&#9670;&#160;</a></span>vitesse()</h2>
 
@@ -199,6 +223,33 @@ Variables</h2></td></tr>
 
 </div>
 </div>
+<a id="abd6c2219798413b22e9cfee588715288" name="abd6c2219798413b22e9cfee588715288"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#abd6c2219798413b22e9cfee588715288">&#9670;&#160;</a></span>parcours</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">char PID::parcours[11][36]</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<b>Valeur initiale :</b><div class="fragment"><div class="line">= {</div>
+<div class="line">    {<span class="stringliteral">&quot;     _____________________________ &quot;</span>},</div>
+<div class="line">    {<span class="stringliteral">&quot;    / __________________________  |&quot;</span>},</div>
+<div class="line">    {<span class="stringliteral">&quot;   / / _____________________ \\  | |&quot;</span>},</div>
+<div class="line">    {<span class="stringliteral">&quot;  / / / ___________________ \\ \\ | |&quot;</span>},</div>
+<div class="line">    {<span class="stringliteral">&quot; / / / / ___________       \\ \\ \\| |&quot;</span>},</div>
+<div class="line">    {<span class="stringliteral">&quot;|        |          \\    /| | | | |&quot;</span>},</div>
+<div class="line">    {<span class="stringliteral">&quot;|        |___________\\  /_| | | | |&quot;</span>},</div>
+<div class="line">    { <span class="stringliteral">&quot;\\ \\ \\ \\_____________ _____/ / /| |&quot;</span>},</div>
+<div class="line">    {<span class="stringliteral">&quot;  \\ \\ \\______________|______/ / | |&quot;</span>},</div>
+<div class="line">    {<span class="stringliteral">&quot;   \\ \\_______________|_______/__| |&quot;</span>},</div>
+<div class="line">    {<span class="stringliteral">&quot;    \\________________|____________|&quot;</span>}</div>
+<div class="line">  }</div>
+</div><!-- fragment -->
+</div>
+</div>
 <a id="a3a8f8a199ce0ed6badb7b90693cf7bd8" name="a3a8f8a199ce0ed6badb7b90693cf7bd8"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a3a8f8a199ce0ed6badb7b90693cf7bd8">&#9670;&#160;</a></span>pulseToDist</h2>
 
@@ -213,14 +264,28 @@ Variables</h2></td></tr>
 
 </div>
 </div>
-<a id="a30de88b0ba95692edc18e68fa0accf5a" name="a30de88b0ba95692edc18e68fa0accf5a"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a30de88b0ba95692edc18e68fa0accf5a">&#9670;&#160;</a></span>speeeeed</h2>
+<a id="ad3e5ab42d6917a764ca92980658cb903" name="ad3e5ab42d6917a764ca92980658cb903"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad3e5ab42d6917a764ca92980658cb903">&#9670;&#160;</a></span>speedMotor</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">float PID::speeeeed = 0</td>
+          <td class="memname">float PID::speedMotor = 0</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a07261d02429f3d7659640f8cee064b32" name="a07261d02429f3d7659640f8cee064b32"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a07261d02429f3d7659640f8cee064b32">&#9670;&#160;</a></span>startPos</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">float PID::startPos[] = {{int(8.24175)}, {int(10.12601)}}</td>
         </tr>
       </table>
 </div><div class="memdoc">
