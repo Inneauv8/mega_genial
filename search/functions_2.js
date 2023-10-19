@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['loop_0',['loop',['../db/d41/namespaceMOVE.html#a31af35664c752b7b8f957311e98e9d96',1,'MOVE']]]
+  ['getdistance_0',['getDistance',['../db/d41/namespaceMOVE.html#ac2e387253b2b4c832a0125f9a12beda5',1,'MOVE']]]
 ];
