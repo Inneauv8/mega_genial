@@ -65,13 +65,17 @@ Modifications :
    */
   void calculPID(valeursPID *incomingValues)
   {
-      float error = incomingValues->Sp - incomingValues->Pv;
-      float dt = millis() - incomingValues->Ti;
+      float dt = (millis() - incomingValues->Ti)/1000.0;
+      Serial.print("dt : ");
+      Serial.print(dt);
+      float error = (incomingValues->Sp - incomingValues->Pv)*dt;
       incomingValues->p = incomingValues->Kp * error;
       incomingValues->i += incomingValues->Ki * (error*dt);
+      if (error == 0.0){incomingValues->i = 0.0;}
       incomingValues->d = incomingValues->Kd * (error - incomingValues->Out) / dt;
       incomingValues->Out = incomingValues->p + incomingValues->i + incomingValues->d;
       incomingValues->Ti = millis();
+
       
   }
  /**
@@ -142,32 +146,145 @@ float speedD()
     return speedMotor;
   }
  
+float averageSpeedD()
+{
+  #define averageSize  200
+  static float average[averageSize] = {};
+
+  float sum = 0.0;
+    for (int i = 0; i < averageSize; i++)
+    {
+      sum += average[i];
+    }
+    sum /= averageSize;
+
+  for (int i = 1; i < averageSize; i++)
+    {
+      average[i - 1] = average[i];
+    }
+
+    average[averageSize - 1] = speedD();
+  return sum;
+}
+
+float averageSpeedG()
+{
+  #define averageSize  200
+  static float average[averageSize] = {};
+
+  float sum = 0.0;
+    for (int i = 0; i < averageSize; i++)
+    {
+      sum += average[i];
+    }
+    sum /= averageSize;
+
+  for (int i = 1; i < averageSize; i++)
+    {
+      average[i - 1] = average[i];
+    }
+
+    average[averageSize - 1] = speedG();
+  return sum;
+}
+
+float speedToVoltage(bool motor, float speed)
+{
+  float slope = 0.0;
+  float b = 0.0;
+  float voltage = 0.0;
+  if (!motor)
+  {
+    slope = 33.0150041911;
+    b = 0.6033235541;
+    voltage = (speed-b)/slope;
+  }
+  else if (motor)
+  {
+    slope = 35.8882648785;
+    b = 1.1290486169;
+    voltage = (speed-b)/slope;
+  }
+  
+  if (voltage < -1.0)
+  {
+    voltage = -1.0;
+  }
+
+  if (voltage > 1.0)
+  {
+    voltage = 1.0;
+  }
+
+  if ( voltage < 0.02 && voltage > -0.02)
+  {
+    voltage = 0.0;
+  }
+
+  return voltage;
+}
+
 //}
 
-float vitesse = 0.3;
-bool target = 0.0;
-struct valeursPID pid = {};
 
+
+float vitesse = 25.0;
+bool target = 0.0;
+struct valeursPID pidG = {};
+struct valeursPID pidD = {};
+float oldSpeedG = 0.0;
+float oldSpeedD = 0.0;
 
 void setup(){
   BoardInit();
   Serial.begin(9600);
-  pid.Kp = 0.1;
+  pidG.Kp = 2.5;
+  pidG.Ki = 0.0;
+  pidG.Kd = 0.0;
+
+  pidD.Kp = 2.5;
+  pidD.Ki = 0.0;
+  pidD.Kd = 0.0;
+
+  ENCODER_Reset(0);
+  ENCODER_Reset(1);
 }
 
 void loop(){
 
-  /*if (ROBUS_IsBumper(0)){
-    target = !target;
+  
+  if (!ROBUS_IsBumper(0))
+  {
+    pidG.Sp = vitesse;
+    pidD.Sp = vitesse;
   }
-  pid.Sp = target;
-  calculPID(&pid);
-  MOTOR_SetSpeed(0, vitesse + pid.Out);
-  MOTOR_SetSpeed(1, vitesse + pid.Out);*/
-  MOTOR_SetSpeed(0, vitesse);
-  MOTOR_SetSpeed(1, vitesse);
-  Serial.print("Moteur gauche : ");
-  Serial.print(speedG());
-  Serial.print("        Moteur droite : ");
-  Serial.println(speedD());
+  else
+  {
+    pidG.Sp = 0.0;
+    pidD.Sp = 0.0;
+  }
+
+  pidG.Pv = speedG();
+  calculPID(&pidG);
+  MOTOR_SetSpeed(0, (speedToVoltage(0, pidG.Out + oldSpeedG)));
+  oldSpeedG += pidG.Out;
+  
+  pidD.Pv = speedD();
+  calculPID(&pidD);
+  MOTOR_SetSpeed(1, (speedToVoltage(1, pidD.Out + oldSpeedD)));
+  oldSpeedD += pidD.Out;
+  Serial.print("/t PID out : ");
+  Serial.print(pidG.Out);
+  Serial.print("/t Speed to voltage : ");
+  Serial.print(speedToVoltage(0, pidG.Out));
+  Serial.print("/t Pv : ");
+  Serial.print(pidG.Pv);
+  Serial.print("/t oldSped : ");
+  Serial.print(oldSpeedG);
+  Serial.print("/t Sp : ");
+  Serial.print(pidG.Sp);
+  Serial.print("/t motor set speed : ");
+  Serial.println((oldSpeedG + speedToVoltage(0, pidG.Out)));
+  Serial.println();
+
 }
