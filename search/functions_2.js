@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['getdistance_0',['getDistance',['../db/d41/namespaceMOVE.html#ac2e387253b2b4c832a0125f9a12beda5',1,'MOVE']]]
+  ['distancemoyenne_0',['distanceMoyenne',['../db/d41/namespaceMOVE.html#a3c77d116a2ec2f00721de1482c39b622',1,'MOVE']]]
 ];
