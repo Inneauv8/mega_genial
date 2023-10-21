@@ -19,7 +19,7 @@ Modifications :
 #include <LibRobus.h>
 #include "Move.h"
 
-//namespace MOVE {
+namespace MOVE {
   // *************************************************************************************************
   //  CONSTANTES
   // *************************************************************************************************
@@ -65,14 +65,12 @@ Modifications :
    */
   void calculPID(valeursPID *incomingValues)
   {
-      float dt = (millis() - incomingValues->Ti)/1000.0;
-      Serial.print("dt : ");
-      Serial.print(dt);
-      float error = (incomingValues->Sp - incomingValues->Pv)*dt;
+      incomingValues->dt = (millis() - incomingValues->Ti)/1000.0;
+      float error = (incomingValues->Sp - incomingValues->Pv)*incomingValues->dt;
       incomingValues->p = incomingValues->Kp * error;
-      incomingValues->i += incomingValues->Ki * (error*dt);
+      incomingValues->i += incomingValues->Ki * (error*incomingValues->dt);
       if (error == 0.0){incomingValues->i = 0.0;}
-      incomingValues->d = incomingValues->Kd * (error - incomingValues->Out) / dt;
+      incomingValues->d = incomingValues->Kd * (error - incomingValues->Out) / incomingValues->dt;
       incomingValues->Out = incomingValues->p + incomingValues->i + incomingValues->d;
       incomingValues->Ti = millis();
 
@@ -130,103 +128,135 @@ Modifications :
     return speedMotor;
   }
 
-float speedD()
-  {
-    
-    static float past = 0.0;
-    static float speedMotor = 0.0;
-    static float oldPulse = 0.0;
-    float present = millis();
-    float pulse = ENCODER_Read(1);
-    speedMotor = 1000.0*pulseToDist*float(pulse-oldPulse)/float(present - past);
-    
-    past = present;
-    oldPulse = pulse;
-    
-    return speedMotor;
-  }
- 
-float averageSpeedD()
-{
-  #define averageSize  200
-  static float average[averageSize] = {};
-
-  float sum = 0.0;
-    for (int i = 0; i < averageSize; i++)
+  float speedD()
     {
-      sum += average[i];
+      
+      static float past = 0.0;
+      static float speedMotor = 0.0;
+      static float oldPulse = 0.0;
+      float present = millis();
+      float pulse = ENCODER_Read(1);
+      speedMotor = 1000.0*pulseToDist*float(pulse-oldPulse)/float(present - past);
+      
+      past = present;
+      oldPulse = pulse;
+      
+      return speedMotor;
     }
-    sum /= averageSize;
-
-  for (int i = 1; i < averageSize; i++)
-    {
-      average[i - 1] = average[i];
-    }
-
-    average[averageSize - 1] = speedD();
-  return sum;
-}
-
-float averageSpeedG()
-{
-  #define averageSize  200
-  static float average[averageSize] = {};
-
-  float sum = 0.0;
-    for (int i = 0; i < averageSize; i++)
-    {
-      sum += average[i];
-    }
-    sum /= averageSize;
-
-  for (int i = 1; i < averageSize; i++)
-    {
-      average[i - 1] = average[i];
-    }
-
-    average[averageSize - 1] = speedG();
-  return sum;
-}
-
-float speedToVoltage(bool motor, float speed)
-{
-  float slope = 0.0;
-  float b = 0.0;
-  float voltage = 0.0;
-  if (!motor)
-  {
-    slope = 33.0150041911;
-    b = 0.6033235541;
-    voltage = (speed-b)/slope;
-  }
-  else if (motor)
-  {
-    slope = 35.8882648785;
-    b = 1.1290486169;
-    voltage = (speed-b)/slope;
-  }
   
-  if (voltage < -1.0)
+  float averageSpeedD()
   {
-    voltage = -1.0;
+    #define averageSize  200
+    static float average[averageSize] = {};
+
+    float sum = 0.0;
+      for (int i = 0; i < averageSize; i++)
+      {
+        sum += average[i];
+      }
+      sum /= averageSize;
+
+    for (int i = 1; i < averageSize; i++)
+      {
+        average[i - 1] = average[i];
+      }
+
+      average[averageSize - 1] = speedD();
+    return sum;
   }
 
-  if (voltage > 1.0)
+  float averageSpeedG()
   {
-    voltage = 1.0;
+    #define averageSize  200
+    static float average[averageSize] = {};
+
+    float sum = 0.0;
+      for (int i = 0; i < averageSize; i++)
+      {
+        sum += average[i];
+      }
+      sum /= averageSize;
+
+    for (int i = 1; i < averageSize; i++)
+      {
+        average[i - 1] = average[i];
+      }
+
+      average[averageSize - 1] = speedG();
+    return sum;
   }
 
-  if ( voltage < 0.02 && voltage > -0.02)
+  float speedToVoltage(bool motor, float speed)
   {
-    voltage = 0.0;
+    float slope = 0.0;
+    float b = 0.0;
+    float voltage = 0.0;
+    if (!motor)
+    {
+      slope = 33.0150041911;
+      b = 0.6033235541;
+      voltage = (speed-b)/slope;
+    }
+    else if (motor)
+    {
+      slope = 35.8882648785;
+      b = 1.1290486169;
+      voltage = (speed-b)/slope;
+    }
+    
+    if (voltage < -1.0)
+    {
+      voltage = -1.0;
+    }
+
+    if (voltage > 1.0)
+    {
+      voltage = 1.0;
+    }
+
+    if ( voltage < 0.02 && voltage > -0.02)
+    {
+      voltage = 0.0;
+    }
+
+    return voltage;
   }
 
-  return voltage;
+  /*void pidInit()
+  {
+  float vitesse = 25.0;
+  bool target = 0.0;
+  struct valeursPID pidG = {};
+  struct valeursPID pidD = {};
+  float oldSpeedG = 0.0;
+  float oldSpeedD = 0.0;
+  }*/
+
+  
+/*void showData()
+{
+  Serial.print("/t dt G : ");
+  Serial.print(pidG.dt);
+  Serial.print("/t dt D : ");
+  Serial.print(pidD.dt);
+  Serial.print("/t Speed G : ");
+  Serial.print(pidG.Pv);
+  Serial.print("/t Speed D : ");
+  Serial.print(pidD.Pv);
+  Serial.print("/t Sp : ");
+  Serial.print(pidG.Sp);
+  Serial.print("/t Sp : ");
+  Serial.print(pidD.Sp);
+  Serial.print("/t motor sp G : ");
+  Serial.print((oldSpeedG + speedToVoltage(0, pidG.Out)));
+  Serial.print("/t motor sp D : ");
+  Serial.println((oldSpeedD + speedToVoltage(1, pidD.Out)));
+  Serial.println();
+}*/
+
 }
 
-//}
-
-
+using namespace MOVE;
 
 float vitesse = 25.0;
 bool target = 0.0;
@@ -234,6 +264,9 @@ struct valeursPID pidG = {};
 struct valeursPID pidD = {};
 float oldSpeedG = 0.0;
 float oldSpeedD = 0.0;
+
+struct valeursPID pidDist = {};
+float ti = 0.0;
 
 void setup(){
   BoardInit();
@@ -255,8 +288,7 @@ void loop(){
   
   if (!ROBUS_IsBumper(0))
   {
-    pidG.Sp = vitesse;
-    pidD.Sp = vitesse;
+    pidDist.Sp = vitesse;
   }
   else
   {
@@ -264,27 +296,51 @@ void loop(){
     pidD.Sp = 0.0;
   }
 
-  pidG.Pv = speedG();
+  float tNow = millis()/1000;
+  float dt = tNow - ti;
+  pidDist.Sp = (speedG() - speedD())*dt;
+  
+  pidDist.Pv = (ENCODER_Read(0) - ENCODER_Read(1));
+  calculPID(&pidDist);
+  float correctSpeed = pidDist.Out / (2*dt);
+
+  pidG.Pv = speedG() + correctSpeed;
   calculPID(&pidG);
   MOTOR_SetSpeed(0, (speedToVoltage(0, pidG.Out + oldSpeedG)));
   oldSpeedG += pidG.Out;
-  
-  pidD.Pv = speedD();
+
+  pidD.Pv = speedD() - correctSpeed;
   calculPID(&pidD);
   MOTOR_SetSpeed(1, (speedToVoltage(1, pidD.Out + oldSpeedD)));
   oldSpeedD += pidD.Out;
-  Serial.print("/t PID out : ");
-  Serial.print(pidG.Out);
-  Serial.print("/t Speed to voltage : ");
-  Serial.print(speedToVoltage(0, pidG.Out));
-  Serial.print("/t Pv : ");
-  Serial.print(pidG.Pv);
-  Serial.print("/t oldSped : ");
-  Serial.print(oldSpeedG);
-  Serial.print("/t Sp : ");
-  Serial.print(pidG.Sp);
-  Serial.print("/t motor set speed : ");
-  Serial.println((oldSpeedG + speedToVoltage(0, pidG.Out)));
-  Serial.println();
+
+  /*
+  prendre les deux vitesses, comparer entre elles pour trouver l'erreur, ajuster la vitesse pour atteindre SP. 
+
+  convertir vitesse en position ou lire encodeurs, 
+
+  fonction PID pour les deux moteurs: utilise les fonctions pids de chaque moteur pour se déplacer à un point précis 
+  avec la bonne orientation. 
+
+  valeurs d'Entrée: position en x initiale, position en x finale, position en y initiale, position en y finale, orientation initiale,
+  orientation finale.
+
+  valeurs de sortie : rien
+
+  utilise la vitesse générale comme facteur de conversion pour trouver un dt à utiliser pour convertir les déplacements 
+  calculés par les maths d'arcs de cercle en vitesse à donner aux moteurs. le feed back se fait par l'update de la position et 
+  de l'orientation.
+
+  PV = (ecart entre pulse des deux moteurs)
+
+  Out : changement de l'écart d'encodeur entre les deux moteurs
+  à convertir en correction de vitesse pour chaque moteur
+  */
+  
+  
+  
+
+  
+  
 
 }
