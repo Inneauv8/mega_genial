@@ -288,7 +288,8 @@ void loop(){
   
   if (!ROBUS_IsBumper(0))
   {
-    pidDist.Sp = vitesse;
+    pidD.Sp = vitesse;
+    pidD.Sp = vitesse;
   }
   else
   {
