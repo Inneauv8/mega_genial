@@ -222,6 +222,21 @@ namespace MOVE {
     return voltage;
   }
 
+  float moveRadius(float xFinal, float yFinal, float finalOrientation)
+  {
+    float x1 = position.x;
+    float y1 = position.y;
+    
+    float slope1 = (yFinal-y1)/(xFinal-x1);
+    float slope2 = tan(finalOrientation);
+    float b1 = y1 + (yFinal - y1)/2 + (x1 + (xFinal - x1)/2) * (1/slope1);
+    float b2 = yFinal + xFinal/slope2;
+    float xRadius = (b2 - b1)/(1/slope2 - 1/slope1);
+    float yRadius = b1 - xRadius/slope1;
+    float radius = sqrt(sq(xRadius - x1) + sq(yRadius - y1));
+    return radius;
+  }
+
   /*void pidInit()
   {
   float vitesse = 25.0;
@@ -281,6 +296,7 @@ void setup(){
 
   ENCODER_Reset(0);
   ENCODER_Reset(1);
+  updatePos();
 }
 
 void loop(){
@@ -297,6 +313,10 @@ void loop(){
     pidD.Sp = 0.0;
   }
 
+
+
+
+
   float tNow = millis()/1000;
   float dt = tNow - ti;
   pidDist.Sp = (speedG() - speedD())*dt;
@@ -304,6 +324,8 @@ void loop(){
   pidDist.Pv = (ENCODER_Read(0) - ENCODER_Read(1));
   calculPID(&pidDist);
   float correctSpeed = pidDist.Out / (2*dt);
+
+
 
   pidG.Pv = speedG() + correctSpeed;
   calculPID(&pidG);
