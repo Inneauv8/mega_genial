@@ -94,7 +94,7 @@ namespace MOVE {
     return (Distance.D+Distance.G)/2;
   }
 
-  float updatePos()
+  void updatePos()
   {
 
     static float oldPulseG = 0.0;
@@ -251,7 +251,7 @@ namespace MOVE {
     {
       return speedSmall;
     }
-    if (arcCercleAngle > 0)
+    else //(arcCercleAngle > 0)
     {
       return speedBig;
     }
@@ -269,7 +269,7 @@ namespace MOVE {
     {
       return speedSmall;
     }
-    if (arcCercleAngle < 0)
+    else //(arcCercleAngle < 0)
     {
       return speedBig;
     }
@@ -356,7 +356,7 @@ void loop(){
 
 
   updatePos();
-  
+
 
   float tNow = millis()/1000;
   float dt = tNow - ti;
