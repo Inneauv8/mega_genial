@@ -42,6 +42,8 @@ namespace MOVE {
 
   //position de départ du robot (x: 4.5 po ; y : 7.5 po)
   float startPos[] = {int(8.24175), int(10.12601)};
+
+  float vitesse = 25.0;
     
   // *************************************************************************************************
   //  FONCTIONS LOCALES
@@ -237,6 +239,42 @@ namespace MOVE {
     return radius;
   }
 
+  float radiusToSpeedG(float moveRadiusRobot, float finalOrientation)
+  {
+    float initialOrientation = position.orientation;
+    float arcCercleAngle = finalOrientation - initialOrientation;
+    float distRobot = 2*moveRadiusRobot*M_PI*abs(arcCercleAngle)/(2*M_PI);
+    float time = distRobot/vitesse;
+    float speedBig = 2*(moveRadiusRobot + wheelBaseDiameter/2)*M_PI*abs(arcCercleAngle)/(2*M_PI*time);
+    float speedSmall= 2*(moveRadiusRobot - wheelBaseDiameter/2)*M_PI*abs(arcCercleAngle)/(2*M_PI*time);
+    if (arcCercleAngle < 0)
+    {
+      return speedSmall;
+    }
+    if (arcCercleAngle > 0)
+    {
+      return speedBig;
+    }
+  }
+
+  float radiusToSpeedD(float moveRadiusRobot, float finalOrientation)
+  {
+    float initialOrientation = position.orientation;
+    float arcCercleAngle = finalOrientation - initialOrientation;
+    float distRobot = 2*moveRadiusRobot*M_PI*abs(arcCercleAngle)/(2*M_PI);
+    float time = distRobot/vitesse;
+    float speedBig = 2*(moveRadiusRobot + wheelBaseDiameter/2)*M_PI*abs(arcCercleAngle)/(2*M_PI*time);
+    float speedSmall= 2*(moveRadiusRobot - wheelBaseDiameter/2)*M_PI*abs(arcCercleAngle)/(2*M_PI*time);
+    if (arcCercleAngle > 0)
+    {
+      return speedSmall;
+    }
+    if (arcCercleAngle < 0)
+    {
+      return speedBig;
+    }
+  }
+
   /*void pidInit()
   {
   float vitesse = 25.0;
@@ -269,11 +307,13 @@ namespace MOVE {
   Serial.println();
 }*/
 
+
+
 }
 
 using namespace MOVE;
 
-float vitesse = 25.0;
+
 bool target = 0.0;
 struct valeursPID pidG = {};
 struct valeursPID pidD = {};
