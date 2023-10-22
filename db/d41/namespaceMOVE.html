@@ -108,6 +108,10 @@ Fonctions</h2></td></tr>
 <tr class="separator:a6dc94d29c95a22759d8046d06361f99e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a977e6d354da3e79a406d2e9610858eea"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../db/d41/namespaceMOVE.html#a977e6d354da3e79a406d2e9610858eea">moveRadius</a> (float xFinal, float yFinal, float finalOrientation)</td></tr>
 <tr class="separator:a977e6d354da3e79a406d2e9610858eea"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a08997ede153abe20213674585fd5a337"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../db/d41/namespaceMOVE.html#a08997ede153abe20213674585fd5a337">radiusToSpeedG</a> (float moveRadiusRobot, float finalOrientation)</td></tr>
+<tr class="separator:a08997ede153abe20213674585fd5a337"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a66133d58da49118c5df9883701e340f1"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../db/d41/namespaceMOVE.html#a66133d58da49118c5df9883701e340f1">radiusToSpeedD</a> (float moveRadiusRobot, float finalOrientation)</td></tr>
+<tr class="separator:a66133d58da49118c5df9883701e340f1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac2e387253b2b4c832a0125f9a12beda5"><td class="memItemLeft" align="right" valign="top"><a class="el" href="../../db/d57/structMOVE_1_1valeursDistance.html">valeursDistance</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../db/d41/namespaceMOVE.html#ac2e387253b2b4c832a0125f9a12beda5">getDistance</a> ()</td></tr>
 <tr class="separator:ac2e387253b2b4c832a0125f9a12beda5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:afacebbbaac95b5115c2219b8a6d8eefd"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../db/d41/namespaceMOVE.html#afacebbbaac95b5115c2219b8a6d8eefd">speed</a> (bool moteur)</td></tr>
@@ -119,6 +123,8 @@ Variables</h2></td></tr>
 <tr class="separator:af1134c4d3bf61af6bdbfd99a05b91c60"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a713957715c2c4f0f8922dd3630098a77"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../db/d41/namespaceMOVE.html#a713957715c2c4f0f8922dd3630098a77">startPos</a> [] = {int(8.24175), int(10.12601)}</td></tr>
 <tr class="separator:a713957715c2c4f0f8922dd3630098a77"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afceed166e12d7c6c16992a21a409329f"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../db/d41/namespaceMOVE.html#afceed166e12d7c6c16992a21a409329f">vitesse</a> = 25.0</td></tr>
+<tr class="separator:afceed166e12d7c6c16992a21a409329f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:abe8624d377434776ac057e2fe59d30ac"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../db/d41/namespaceMOVE.html#abe8624d377434776ac057e2fe59d30ac">pulseToDist</a> = M_PI*wheelDiameter/3200.0</td></tr>
 <tr class="separator:abe8624d377434776ac057e2fe59d30ac"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae5f3dceeee5c860a45cf73ceb18e5e75"><td class="memItemLeft" align="right" valign="top">struct <a class="el" href="../../db/d57/structMOVE_1_1valeursDistance.html">MOVE::valeursDistance</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../db/d41/namespaceMOVE.html#ae5f3dceeee5c860a45cf73ceb18e5e75">Distance</a></td></tr>
@@ -246,6 +252,62 @@ Variables</h2></td></tr>
           <td></td>
           <td class="paramtype">float&#160;</td>
           <td class="paramname"><em>yFinal</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">float&#160;</td>
+          <td class="paramname"><em>finalOrientation</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a66133d58da49118c5df9883701e340f1" name="a66133d58da49118c5df9883701e340f1"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a66133d58da49118c5df9883701e340f1">&#9670;&#160;</a></span>radiusToSpeedD()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">float MOVE::radiusToSpeedD </td>
+          <td>(</td>
+          <td class="paramtype">float&#160;</td>
+          <td class="paramname"><em>moveRadiusRobot</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">float&#160;</td>
+          <td class="paramname"><em>finalOrientation</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a08997ede153abe20213674585fd5a337" name="a08997ede153abe20213674585fd5a337"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a08997ede153abe20213674585fd5a337">&#9670;&#160;</a></span>radiusToSpeedG()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">float MOVE::radiusToSpeedG </td>
+          <td>(</td>
+          <td class="paramtype">float&#160;</td>
+          <td class="paramname"><em>moveRadiusRobot</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
@@ -438,6 +500,20 @@ Variables</h2></td></tr>
       <table class="memname">
         <tr>
           <td class="memname">float MOVE::startPos[] = {int(8.24175), int(10.12601)}</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="afceed166e12d7c6c16992a21a409329f" name="afceed166e12d7c6c16992a21a409329f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#afceed166e12d7c6c16992a21a409329f">&#9670;&#160;</a></span>vitesse</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">float MOVE::vitesse = 25.0</td>
         </tr>
       </table>
 </div><div class="memdoc">
