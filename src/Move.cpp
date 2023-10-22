@@ -322,6 +322,7 @@ float oldSpeedD = 0.0;
 
 struct valeursPID pidDist = {};
 float ti = 0.0;
+float x = 0, y = 0, theta = 0;
 
 void setup(){
   BoardInit();
@@ -344,8 +345,7 @@ void loop(){
   
   if (!ROBUS_IsBumper(0))
   {
-    pidD.Sp = vitesse;
-    pidD.Sp = vitesse;
+    x = 0, y = 0, theta = 0;
   }
   else
   {
@@ -355,16 +355,17 @@ void loop(){
 
 
 
-
+  updatePos();
+  
 
   float tNow = millis()/1000;
   float dt = tNow - ti;
-  pidDist.Sp = (speedG() - speedD())*dt;
+  pidDist.Sp = (radiusToSpeedG(moveRadius(x, y, theta), theta) - radiusToSpeedD(moveRadius(x, y, theta), theta))*dt;
   
   pidDist.Pv = (ENCODER_Read(0) - ENCODER_Read(1));
   calculPID(&pidDist);
   float correctSpeed = pidDist.Out / (2*dt);
-
+  ti = tNow;
 
 
   pidG.Pv = speedG() + correctSpeed;
