@@ -108,6 +108,14 @@ Fonctions</h2></td></tr>
 <tr class="separator:a6dc94d29c95a22759d8046d06361f99e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a977e6d354da3e79a406d2e9610858eea"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../db/d41/namespaceMOVE.html#a977e6d354da3e79a406d2e9610858eea">moveRadius</a> (float xFinal, float yFinal, float finalOrientation)</td></tr>
 <tr class="separator:a977e6d354da3e79a406d2e9610858eea"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a315e036cd760b1e3d9320732fc4f7137"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../db/d41/namespaceMOVE.html#a315e036cd760b1e3d9320732fc4f7137">showDataPID</a> (<a class="el" href="../../dd/d4f/structMOVE_1_1valeursPID.html">valeursPID</a> *incomingValues)</td></tr>
+<tr class="separator:a315e036cd760b1e3d9320732fc4f7137"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aeb0e8b0520236ed0771fcc103d9c6886"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../db/d41/namespaceMOVE.html#aeb0e8b0520236ed0771fcc103d9c6886">updatePIDG</a> (float Sp)</td></tr>
+<tr class="separator:aeb0e8b0520236ed0771fcc103d9c6886"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8dcfea77956aa54f7137d14e17063994"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../db/d41/namespaceMOVE.html#a8dcfea77956aa54f7137d14e17063994">updatePIDD</a> (float Sp)</td></tr>
+<tr class="separator:a8dcfea77956aa54f7137d14e17063994"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad0ff9ff6c3eb3cb451ead6570ef228e3"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../db/d41/namespaceMOVE.html#ad0ff9ff6c3eb3cb451ead6570ef228e3">updatePIDMain</a> (float <a class="el" href="../../db/d41/namespaceMOVE.html#afacebbbaac95b5115c2219b8a6d8eefd">speed</a>, float ratio)</td></tr>
+<tr class="separator:ad0ff9ff6c3eb3cb451ead6570ef228e3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a08997ede153abe20213674585fd5a337"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../db/d41/namespaceMOVE.html#a08997ede153abe20213674585fd5a337">radiusToSpeedG</a> (float moveRadiusRobot, float finalOrientation)</td></tr>
 <tr class="separator:a08997ede153abe20213674585fd5a337"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a66133d58da49118c5df9883701e340f1"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../db/d41/namespaceMOVE.html#a66133d58da49118c5df9883701e340f1">radiusToSpeedD</a> (float moveRadiusRobot, float finalOrientation)</td></tr>
@@ -325,6 +333,24 @@ Variables</h2></td></tr>
 
 </div>
 </div>
+<a id="a315e036cd760b1e3d9320732fc4f7137" name="a315e036cd760b1e3d9320732fc4f7137"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a315e036cd760b1e3d9320732fc4f7137">&#9670;&#160;</a></span>showDataPID()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void MOVE::showDataPID </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="../../dd/d4f/structMOVE_1_1valeursPID.html">valeursPID</a> *&#160;</td>
+          <td class="paramname"><em>incomingValues</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
 <a id="afacebbbaac95b5115c2219b8a6d8eefd" name="afacebbbaac95b5115c2219b8a6d8eefd"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#afacebbbaac95b5115c2219b8a6d8eefd">&#9670;&#160;</a></span>speed()</h2>
 
@@ -394,6 +420,70 @@ Variables</h2></td></tr>
           <td></td>
           <td class="paramtype">float&#160;</td>
           <td class="paramname"><em>speed</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a8dcfea77956aa54f7137d14e17063994" name="a8dcfea77956aa54f7137d14e17063994"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8dcfea77956aa54f7137d14e17063994">&#9670;&#160;</a></span>updatePIDD()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void MOVE::updatePIDD </td>
+          <td>(</td>
+          <td class="paramtype">float&#160;</td>
+          <td class="paramname"><em>Sp</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="aeb0e8b0520236ed0771fcc103d9c6886" name="aeb0e8b0520236ed0771fcc103d9c6886"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aeb0e8b0520236ed0771fcc103d9c6886">&#9670;&#160;</a></span>updatePIDG()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void MOVE::updatePIDG </td>
+          <td>(</td>
+          <td class="paramtype">float&#160;</td>
+          <td class="paramname"><em>Sp</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="ad0ff9ff6c3eb3cb451ead6570ef228e3" name="ad0ff9ff6c3eb3cb451ead6570ef228e3"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad0ff9ff6c3eb3cb451ead6570ef228e3">&#9670;&#160;</a></span>updatePIDMain()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void MOVE::updatePIDMain </td>
+          <td>(</td>
+          <td class="paramtype">float&#160;</td>
+          <td class="paramname"><em>speed</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">float&#160;</td>
+          <td class="paramname"><em>ratio</em>&#160;</td>
         </tr>
         <tr>
           <td></td>
