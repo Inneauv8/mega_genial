@@ -150,12 +150,17 @@ namespace MOVE {
     #define averageSize  200
     static float average[averageSize] = {};
 
+    for (int i = 0; i < averageSize; i++)
+    {
+      average[i] = vitesse;
+    }
+
     float sum = 0.0;
-      for (int i = 0; i < averageSize; i++)
-      {
-        sum += average[i];
-      }
-      sum /= averageSize;
+    for (int i = 0; i < averageSize; i++)
+    {
+      sum += average[i];
+    }
+    sum /= averageSize;
 
     for (int i = 1; i < averageSize; i++)
       {
@@ -170,13 +175,17 @@ namespace MOVE {
   {
     #define averageSize  200
     static float average[averageSize] = {};
+    for (int i = 0; i < averageSize; i++)
+    {
+      average[i] = vitesse;
+    }
 
     float sum = 0.0;
-      for (int i = 0; i < averageSize; i++)
-      {
-        sum += average[i];
-      }
-      sum /= averageSize;
+    for (int i = 0; i < averageSize; i++)
+    {
+      sum += average[i];
+    }
+    sum /= averageSize;
 
     for (int i = 1; i < averageSize; i++)
       {
@@ -316,19 +325,18 @@ namespace MOVE {
 
     if(speedR == 0)
     {
-      speedR = 0.01;
+      speedR = 0.0001;
     }
     if(speedL == 0)
     {
-      speedL = 0.01;
+      speedL = 0.0001;
     }
 
     pidDist.Pv = (speedL / speedR);
 
     calculPID(&pidDist);
-
-    updatePIDG(speed + (speed * pidDist.Out));
-    updatePIDD(speed - (speed * pidDist.Out));
+    updatePIDG(speed * pidDist.Out);
+    updatePIDD(speed / pidDist.Out);
     showDataPID(&pidDist);
   }
   
