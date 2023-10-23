@@ -45,6 +45,7 @@ namespace MOVE {
 
   float vitesse = 25.0;
     
+  float x = 0, y = 0, theta = 0;
   // *************************************************************************************************
   //  FONCTIONS LOCALES
   // *************************************************************************************************
@@ -149,12 +150,17 @@ namespace MOVE {
     #define averageSize  5
     static float average[averageSize] = {};
 
+    for (int i = 0; i < averageSize; i++)
+    {
+      average[i] = vitesse;
+    }
+
     float sum = 0.0;
-      for (int i = 0; i < averageSize; i++)
-      {
-        sum += average[i];
-      }
-      sum /= averageSize;
+    for (int i = 0; i < averageSize; i++)
+    {
+      sum += average[i];
+    }
+    sum /= averageSize;
 
     for (int i = 1; i < averageSize; i++)
       {
@@ -169,13 +175,17 @@ namespace MOVE {
   {
     #define averageSize  5
     static float average[averageSize] = {};
+    for (int i = 0; i < averageSize; i++)
+    {
+      average[i] = vitesse;
+    }
 
     float sum = 0.0;
-      for (int i = 0; i < averageSize; i++)
-      {
-        sum += average[i];
-      }
-      sum /= averageSize;
+    for (int i = 0; i < averageSize; i++)
+    {
+      sum += average[i];
+    }
+    sum /= averageSize;
 
     for (int i = 1; i < averageSize; i++)
       {
@@ -288,7 +298,7 @@ namespace MOVE {
     pidD.Sp = Sp;
     pidD.Pv = speedD();
     calculPID(&pidD);
-    MOTOR_SetSpeed(1, (speedToVoltage(0, pidD.Out)));
+    MOTOR_SetSpeed(1, (speedToVoltage(1, pidD.Out)));
     //showDataPID(&pidD);
   }
 
@@ -328,11 +338,11 @@ namespace MOVE {
     speedR = averageSpeedD();
     if(speedR == 0 || speedR != speedR) // Check if 0 or NaN
     {
-      speedR = 0.01;
+      speedR = 0.0001;
     }
     if(speedL == 0 || speedL != speedL) // Check if 0 or NaN
     {
-      speedL = 0.01;
+      speedL = 0.0001;
     }
 
     pv = (speedL / speedR);
@@ -402,15 +412,13 @@ namespace MOVE {
     }
   }
 
-  /*void pidInit()
+  void move(float xFinal, float yFinal, float finalOrientation)
   {
-  float vitesse = 25.0;
-  bool target = 0.0;
-  struct valeursPID pidG = {};
-  struct valeursPID pidD = {};
-  float oldSpeedG = 0.0;
-  float oldSpeedD = 0.0;
-  }*/
+    float radius = moveRadius(xFinal, yFinal, finalOrientation);
+    float ratio = radiusToSpeedG(radius, finalOrientation)/radiusToSpeedD(radius, finalOrientation);
+    updatePIDMain(vitesse, ratio);
+    updatePos();
+  }
 
 }
 
@@ -424,7 +432,7 @@ void setup(){
 
   ENCODER_Reset(0);
   ENCODER_Reset(1);
-  //updatePos();
+  updatePos();
 }
 
 void loop(){
@@ -433,7 +441,7 @@ void loop(){
   if (!ROBUS_IsBumper(0))
   {
     ratio = 1.0;
-    //x = 0, y = 0, theta = 0;
+    x = 0, y = 0, theta = 0;
   }
   else
   {
