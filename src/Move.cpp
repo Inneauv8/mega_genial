@@ -42,6 +42,8 @@ namespace MOVE {
 
   //position de départ du robot (x: 4.5 po ; y : 7.5 po)
   float startPos[] = {int(8.24175), int(10.12601)};
+
+  float vitesse = 25.0;
     
   // *************************************************************************************************
   //  FONCTIONS LOCALES
@@ -90,7 +92,7 @@ namespace MOVE {
     return (Distance.D+Distance.G)/2;
   }
 
-  float updatePos()
+  void updatePos()
   {
 
     static float oldPulseG = 0.0;
@@ -328,6 +330,43 @@ namespace MOVE {
     updatePIDD(speed - (speed * pidDist.Out));
     showDataPID(&pidDist);
   }
+  
+  float radiusToSpeedG(float moveRadiusRobot, float finalOrientation)
+  {
+    float initialOrientation = position.orientation;
+    float arcCercleAngle = finalOrientation - initialOrientation;
+    float distRobot = 2*moveRadiusRobot*M_PI*abs(arcCercleAngle)/(2*M_PI);
+    float time = distRobot/vitesse;
+    float speedBig = 2*(moveRadiusRobot + wheelBaseDiameter/2)*M_PI*abs(arcCercleAngle)/(2*M_PI*time);
+    float speedSmall= 2*(moveRadiusRobot - wheelBaseDiameter/2)*M_PI*abs(arcCercleAngle)/(2*M_PI*time);
+    if (arcCercleAngle < 0)
+    {
+      return speedSmall;
+    }
+    else //(arcCercleAngle > 0)
+    {
+      return speedBig;
+    }
+  }
+
+  float radiusToSpeedD(float moveRadiusRobot, float finalOrientation)
+  {
+    float initialOrientation = position.orientation;
+    float arcCercleAngle = finalOrientation - initialOrientation;
+    float distRobot = 2*moveRadiusRobot*M_PI*abs(arcCercleAngle)/(2*M_PI);
+    float time = distRobot/vitesse;
+    float speedBig = 2*(moveRadiusRobot + wheelBaseDiameter/2)*M_PI*abs(arcCercleAngle)/(2*M_PI*time);
+    float speedSmall= 2*(moveRadiusRobot - wheelBaseDiameter/2)*M_PI*abs(arcCercleAngle)/(2*M_PI*time);
+    if (arcCercleAngle > 0)
+    {
+      return speedSmall;
+    }
+    else //(arcCercleAngle < 0)
+    {
+      return speedBig;
+    }
+  }
+
   /*void pidInit()
   {
   float vitesse = 25.0;
@@ -342,7 +381,6 @@ namespace MOVE {
 
 using namespace MOVE;
 
-float vitesse = 25.0;
 float ratio = 1.0;
 
 void setup(){
@@ -360,6 +398,7 @@ void loop(){
   if (!ROBUS_IsBumper(0))
   {
     ratio = 1.0;
+    //x = 0, y = 0, theta = 0;
   }
   else
   {
