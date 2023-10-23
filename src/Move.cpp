@@ -150,11 +150,6 @@ namespace MOVE {
     #define averageSize  5
     static float average[averageSize] = {};
 
-    for (int i = 0; i < averageSize; i++)
-    {
-      average[i] = vitesse;
-    }
-
     float sum = 0.0;
     for (int i = 0; i < averageSize; i++)
     {
@@ -175,10 +170,6 @@ namespace MOVE {
   {
     #define averageSize  5
     static float average[averageSize] = {};
-    for (int i = 0; i < averageSize; i++)
-    {
-      average[i] = vitesse;
-    }
 
     float sum = 0.0;
     for (int i = 0; i < averageSize; i++)
@@ -285,7 +276,7 @@ namespace MOVE {
     pidG.Pv = speedG();
     calculPID(&pidG);
     MOTOR_SetSpeed(0, (speedToVoltage(0, pidG.Out)));
-    //showDataPID(&pidG);
+    showDataPID(&pidG);
   }
 
   void updatePIDD(float Sp)
@@ -299,7 +290,7 @@ namespace MOVE {
     pidD.Pv = speedD();
     calculPID(&pidD);
     MOTOR_SetSpeed(1, (speedToVoltage(1, pidD.Out)));
-    //showDataPID(&pidD);
+    showDataPID(&pidD);
   }
 
 
@@ -307,8 +298,8 @@ namespace MOVE {
   {
     static struct valeursPID pidDistG = {};
     static struct valeursPID pidDistD = {};
-    static bool firstTime = false;
-    if(!firstTime)
+    static bool firstTime = true;
+    if(firstTime)
     {
       pidDistG.Kp = 0.1;
       pidDistG.Ki = 0.0;
@@ -318,7 +309,7 @@ namespace MOVE {
       pidDistD.Ki = 0.0;
       pidDistD.Kd = 0.0;
       pidDistD.Out = 1.0;
-      firstTime = true;
+      firstTime = false;
     }
   
     static float speedL;
@@ -346,14 +337,20 @@ namespace MOVE {
     }
 
     pv = (speedL / speedR);
-    if(pv >= 10)
+    if(pv >= 20.0)
     {
-      pv = 10;
-    } else if(pv < 0.1)
+      pv = 20.0;
+    } else if(pv < 0.05 && pv > 0.0)
     {
-      pv = 0.1;
+      pv = 0.05;
+    } else if(pv > -0.05 && pv < 0.0)
+    {
+      pv = -0.05;
+    }else if(pv <= -20.0)
+    {
+      pv = -20.0;
     }
-
+    
     pidDistG.Pv = pv;
     pidDistD.Pv = 1 / pv;
 
@@ -448,7 +445,7 @@ void loop(){
     ratio = 0.0;
   }
 
-
+  
   updatePIDMain(vitesse, ratio);
   delay(5);
 
