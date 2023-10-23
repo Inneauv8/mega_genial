@@ -45,6 +45,7 @@ namespace MOVE {
 
   float vitesse = 25.0;
     
+  float x = 0, y = 0, theta = 0;
   // *************************************************************************************************
   //  FONCTIONS LOCALES
   // *************************************************************************************************
@@ -288,7 +289,7 @@ namespace MOVE {
     pidD.Sp = Sp;
     pidD.Pv = speedD();
     calculPID(&pidD);
-    MOTOR_SetSpeed(0, (speedToVoltage(0, pidD.Out)));
+    MOTOR_SetSpeed(1, (speedToVoltage(1, pidD.Out)));
     showDataPID(&pidD);
   }
 
@@ -367,15 +368,13 @@ namespace MOVE {
     }
   }
 
-  /*void pidInit()
+  void move(float xFinal, float yFinal, float finalOrientation)
   {
-  float vitesse = 25.0;
-  bool target = 0.0;
-  struct valeursPID pidG = {};
-  struct valeursPID pidD = {};
-  float oldSpeedG = 0.0;
-  float oldSpeedD = 0.0;
-  }*/
+    float radius = moveRadius(xFinal, yFinal, finalOrientation);
+    float ratio = radiusToSpeedG(radius, finalOrientation)/radiusToSpeedD(radius, finalOrientation);
+    updatePIDMain(vitesse, ratio);
+    updatePos();
+  }
 
 }
 
@@ -389,7 +388,7 @@ void setup(){
 
   ENCODER_Reset(0);
   ENCODER_Reset(1);
-  //updatePos();
+  updatePos();
 }
 
 void loop(){
@@ -398,37 +397,13 @@ void loop(){
   if (!ROBUS_IsBumper(0))
   {
     ratio = 1.0;
-    //x = 0, y = 0, theta = 0;
+    x = 0, y = 0, theta = 0;
   }
   else
   {
     ratio = 0.0;
   }
 
-
-  updatePIDMain(vitesse, ratio);
-
-  /*
-  prendre les deux vitesses, comparer entre elles pour trouver l'erreur, ajuster la vitesse pour atteindre SP. 
-
-  convertir vitesse en position ou lire encodeurs, 
-
-  fonction PID pour les deux moteurs: utilise les fonctions pids de chaque moteur pour se déplacer à un point précis 
-  avec la bonne orientation. 
-
-  valeurs d'Entrée: position en x initiale, position en x finale, position en y initiale, position en y finale, orientation initiale,
-  orientation finale.
-
-  valeurs de sortie : rien
-
-  utilise la vitesse générale comme facteur de conversion pour trouver un dt à utiliser pour convertir les déplacements 
-  calculés par les maths d'arcs de cercle en vitesse à donner aux moteurs. le feed back se fait par l'update de la position et 
-  de l'orientation.
-
-  PV = (ecart entre pulse des deux moteurs)
-
-  Out : changement de l'écart d'encodeur entre les deux moteurs
-  à convertir en correction de vitesse pour chaque moteur
-  */
+  move(x, y, theta);
 
 }
