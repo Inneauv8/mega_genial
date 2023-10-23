@@ -146,7 +146,7 @@ namespace MOVE {
   
   float averageSpeedD()
   {
-    #define averageSize  200
+    #define averageSize  5
     static float average[averageSize] = {};
 
     float sum = 0.0;
@@ -167,7 +167,7 @@ namespace MOVE {
 
   float averageSpeedG()
   {
-    #define averageSize  200
+    #define averageSize  5
     static float average[averageSize] = {};
 
     float sum = 0.0;
@@ -267,7 +267,7 @@ namespace MOVE {
   void updatePIDG(float Sp)
   {
     static struct valeursPID pidG = {};
-    pidG.Kp = 0.5;
+    pidG.Kp = 2.5;
     pidG.Ki = 0.0;
     pidG.Kd = 0.0;
 
@@ -275,7 +275,7 @@ namespace MOVE {
     pidG.Pv = speedG();
     calculPID(&pidG);
     MOTOR_SetSpeed(0, (speedToVoltage(0, pidG.Out)));
-    showDataPID(&pidG);
+    //showDataPID(&pidG);
   }
 
   void updatePIDD(float Sp)
@@ -288,20 +288,32 @@ namespace MOVE {
     pidD.Sp = Sp;
     pidD.Pv = speedD();
     calculPID(&pidD);
-    MOTOR_SetSpeed(0, (speedToVoltage(0, pidD.Out)));
-    showDataPID(&pidD);
+    MOTOR_SetSpeed(1, (speedToVoltage(0, pidD.Out)));
+    //showDataPID(&pidD);
   }
 
 
   void updatePIDMain(float speed, float ratio)
   {
-    static struct valeursPID pidDist = {};
-    pidDist.Kp = 2.5;
-    pidDist.Ki = 0.0;
-    pidDist.Kd = 0.0;
-    float speedL = speedG();
-    float speedR = speedD();
-
+    static struct valeursPID pidDistG = {};
+    static struct valeursPID pidDistD = {};
+    static bool firstTime = false;
+    if(!firstTime)
+    {
+      pidDistG.Kp = 0.1;
+      pidDistG.Ki = 0.0;
+      pidDistG.Kd = 0.0;
+      pidDistG.Out = 1.0;
+      pidDistD.Kp = 0.1;
+      pidDistD.Ki = 0.0;
+      pidDistD.Kd = 0.0;
+      pidDistD.Out = 1.0;
+      firstTime = true;
+    }
+  
+    static float speedL;
+    static float speedR;
+    float pv;
     //Ancien code
     //pidDist.Sp = (speedG() - speedD())*pidDist.dt;
     //pidDist.Pv = (ENCODER_Read(0) - ENCODER_Read(1));
@@ -309,26 +321,49 @@ namespace MOVE {
     //float correctSpeed = pidDist.Out / (2*pidDist.dt);
 
     //Test SH
-    pidDist.Sp = ratio;
-    
+    pidDistG.Sp = ratio;
+    pidDistD.Sp = 1 / ratio;
 
-
-    if(speedR == 0)
+    speedL = averageSpeedG();
+    speedR = averageSpeedD();
+    if(speedR == 0 || speedR != speedR) // Check if 0 or NaN
     {
       speedR = 0.01;
     }
-    if(speedL == 0)
+    if(speedL == 0 || speedL != speedL) // Check if 0 or NaN
     {
       speedL = 0.01;
     }
 
-    pidDist.Pv = (speedL / speedR);
+    pv = (speedL / speedR);
+    if(pv >= 10)
+    {
+      pv = 10;
+    } else if(pv < 0.1)
+    {
+      pv = 0.1;
+    }
 
-    calculPID(&pidDist);
+    pidDistG.Pv = pv;
+    pidDistD.Pv = 1 / pv;
 
-    updatePIDG(speed + (speed * pidDist.Out));
-    updatePIDD(speed - (speed * pidDist.Out));
-    showDataPID(&pidDist);
+    calculPID(&pidDistG);
+    calculPID(&pidDistD);
+
+    Serial.print(speedL);
+    Serial.print("\t");
+    Serial.print(speedR);
+    Serial.print("\t");
+    Serial.print(pidDistG.Pv);
+    Serial.print("\t");
+    Serial.print(pidDistG.Out);
+    Serial.print("\t");
+    Serial.print(pidDistD.Pv);
+    Serial.print("\t");
+    Serial.println(pidDistD.Out);
+    updatePIDG(speed * pidDistG.Out);
+    updatePIDD(speed * pidDistD.Out);
+    //showDataPID(&pidDist);
   }
   
   float radiusToSpeedG(float moveRadiusRobot, float finalOrientation)
@@ -407,6 +442,7 @@ void loop(){
 
 
   updatePIDMain(vitesse, ratio);
+  delay(5);
 
   /*
   prendre les deux vitesses, comparer entre elles pour trouver l'erreur, ajuster la vitesse pour atteindre SP. 
