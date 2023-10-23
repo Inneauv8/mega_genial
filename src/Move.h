@@ -29,7 +29,7 @@ namespace MOVE {
       float Ki; // Constante intégrale
       float Kd; // Constante dérivée
       float Ti; // Temps initial
-      float dt; //Intervalle de temps pour le calcul d'intégrales et de dérivées
+      float dt; // Intervalle de temps pour le calcul d'intégrales et de dérivées
       float Sp; // Set Point (Valeur voulue)
       float Pv; // Process Value (Valeur réelle)
       float p; // Valeur proportionnelle

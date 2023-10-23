@@ -71,10 +71,8 @@ namespace MOVE {
       incomingValues->i += incomingValues->Ki * (error*incomingValues->dt);
       if (error == 0.0){incomingValues->i = 0.0;}
       incomingValues->d = incomingValues->Kd * (error - incomingValues->Out) / incomingValues->dt;
-      incomingValues->Out = incomingValues->p + incomingValues->i + incomingValues->d;
+      incomingValues->Out += incomingValues->p + incomingValues->i + incomingValues->d;
       incomingValues->Ti = millis();
-
-      
   }
  /**
    * @brief Retourne les distances parcourues en pouces par les moteurs
@@ -237,6 +235,99 @@ namespace MOVE {
     return radius;
   }
 
+  void showDataPID(valeursPID *incomingValues)
+  {
+    Serial.print("Kp : ");
+    Serial.print(incomingValues->Kp);
+    Serial.print("\t Ki : ");
+    Serial.print(incomingValues->Ki);
+    Serial.print("\t Kd : ");
+    Serial.print(incomingValues->Kd);
+    Serial.print("\t Ti : ");
+    Serial.print(incomingValues->Ti);
+    Serial.print("\t dt : ");
+    Serial.print(incomingValues->dt);
+    Serial.print("\t Sp : ");
+    Serial.print(incomingValues->Sp);
+    Serial.print("\t Pv : ");
+    Serial.print(incomingValues->Pv);
+    Serial.print("\t p : ");
+    Serial.print(incomingValues->p);
+    Serial.print("\t i : ");
+    Serial.print(incomingValues->i);
+    Serial.print("\t d : ");
+    Serial.print(incomingValues->d);
+    Serial.print("\t Out : ");
+    Serial.println(incomingValues->Out);
+    Serial.println();
+  }
+
+  void updatePIDG(float Sp)
+  {
+    static struct valeursPID pidG = {};
+    pidG.Kp = 0.5;
+    pidG.Ki = 0.0;
+    pidG.Kd = 0.0;
+
+    pidG.Sp = Sp;
+    pidG.Pv = speedG();
+    calculPID(&pidG);
+    MOTOR_SetSpeed(0, (speedToVoltage(0, pidG.Out)));
+    showDataPID(&pidG);
+  }
+
+  void updatePIDD(float Sp)
+  {
+    static struct valeursPID pidD = {};
+    pidD.Kp = 2.5;
+    pidD.Ki = 0.0;
+    pidD.Kd = 0.0;
+
+    pidD.Sp = Sp;
+    pidD.Pv = speedD();
+    calculPID(&pidD);
+    MOTOR_SetSpeed(0, (speedToVoltage(0, pidD.Out)));
+    showDataPID(&pidD);
+  }
+
+
+  void updatePIDMain(float speed, float ratio)
+  {
+    static struct valeursPID pidDist = {};
+    pidDist.Kp = 2.5;
+    pidDist.Ki = 0.0;
+    pidDist.Kd = 0.0;
+    float speedL = speedG();
+    float speedR = speedD();
+
+    //Ancien code
+    //pidDist.Sp = (speedG() - speedD())*pidDist.dt;
+    //pidDist.Pv = (ENCODER_Read(0) - ENCODER_Read(1));
+    //calculPID(&pidDist);
+    //float correctSpeed = pidDist.Out / (2*pidDist.dt);
+
+    //Test SH
+    pidDist.Sp = ratio;
+    
+
+
+    if(speedR == 0)
+    {
+      speedR = 0.01;
+    }
+    if(speedL == 0)
+    {
+      speedL = 0.01;
+    }
+
+    pidDist.Pv = (speedL / speedR);
+
+    calculPID(&pidDist);
+
+    updatePIDG(speed + (speed * pidDist.Out));
+    updatePIDD(speed - (speed * pidDist.Out));
+    showDataPID(&pidDist);
+  }
   /*void pidInit()
   {
   float vitesse = 25.0;
@@ -247,56 +338,20 @@ namespace MOVE {
   float oldSpeedD = 0.0;
   }*/
 
-  
-/*void showData()
-{
-  Serial.print("/t dt G : ");
-  Serial.print(pidG.dt);
-  Serial.print("/t dt D : ");
-  Serial.print(pidD.dt);
-  Serial.print("/t Speed G : ");
-  Serial.print(pidG.Pv);
-  Serial.print("/t Speed D : ");
-  Serial.print(pidD.Pv);
-  Serial.print("/t Sp : ");
-  Serial.print(pidG.Sp);
-  Serial.print("/t Sp : ");
-  Serial.print(pidD.Sp);
-  Serial.print("/t motor sp G : ");
-  Serial.print((oldSpeedG + speedToVoltage(0, pidG.Out)));
-  Serial.print("/t motor sp D : ");
-  Serial.println((oldSpeedD + speedToVoltage(1, pidD.Out)));
-  Serial.println();
-}*/
-
 }
 
 using namespace MOVE;
 
 float vitesse = 25.0;
-bool target = 0.0;
-struct valeursPID pidG = {};
-struct valeursPID pidD = {};
-float oldSpeedG = 0.0;
-float oldSpeedD = 0.0;
-
-struct valeursPID pidDist = {};
-float ti = 0.0;
+float ratio = 1.0;
 
 void setup(){
   BoardInit();
   Serial.begin(9600);
-  pidG.Kp = 2.5;
-  pidG.Ki = 0.0;
-  pidG.Kd = 0.0;
-
-  pidD.Kp = 2.5;
-  pidD.Ki = 0.0;
-  pidD.Kd = 0.0;
 
   ENCODER_Reset(0);
   ENCODER_Reset(1);
-  updatePos();
+  //updatePos();
 }
 
 void loop(){
@@ -304,38 +359,15 @@ void loop(){
   
   if (!ROBUS_IsBumper(0))
   {
-    pidD.Sp = vitesse;
-    pidD.Sp = vitesse;
+    ratio = 1.0;
   }
   else
   {
-    pidG.Sp = 0.0;
-    pidD.Sp = 0.0;
+    ratio = 0.0;
   }
 
 
-
-
-
-  float tNow = millis()/1000;
-  float dt = tNow - ti;
-  pidDist.Sp = (speedG() - speedD())*dt;
-  
-  pidDist.Pv = (ENCODER_Read(0) - ENCODER_Read(1));
-  calculPID(&pidDist);
-  float correctSpeed = pidDist.Out / (2*dt);
-
-
-
-  pidG.Pv = speedG() + correctSpeed;
-  calculPID(&pidG);
-  MOTOR_SetSpeed(0, (speedToVoltage(0, pidG.Out + oldSpeedG)));
-  oldSpeedG += pidG.Out;
-
-  pidD.Pv = speedD() - correctSpeed;
-  calculPID(&pidD);
-  MOTOR_SetSpeed(1, (speedToVoltage(1, pidD.Out + oldSpeedD)));
-  oldSpeedD += pidD.Out;
+  updatePIDMain(vitesse, ratio);
 
   /*
   prendre les deux vitesses, comparer entre elles pour trouver l'erreur, ajuster la vitesse pour atteindre SP. 
@@ -359,11 +391,5 @@ void loop(){
   Out : changement de l'écart d'encodeur entre les deux moteurs
   à convertir en correction de vitesse pour chaque moteur
   */
-  
-  
-  
-
-  
-  
 
 }
