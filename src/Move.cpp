@@ -321,7 +321,7 @@ namespace MOVE {
     } 
     else if(speed - abs(pidSpeed.Out / 2) > 30)
     {
-      speed += -30 - abs(pidSpeed.Out / 2);
+      speed = -30 - abs(pidSpeed.Out / 2);
     }
 
     Serial.print(speedL);
