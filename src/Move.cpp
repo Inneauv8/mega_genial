@@ -43,7 +43,7 @@ namespace MOVE {
   //position de départ du robot (x: 4.5 po ; y : 7.5 po)
   float startPos[] = {int(8.24175), int(10.12601)};
 
-  float vitesse = 25.0;
+  float vitesse = 15.0;
     
   float x = 0, y = 0, theta = 0;
   // *************************************************************************************************
@@ -274,7 +274,7 @@ namespace MOVE {
     pidG.Pv = speedG();
     calculPID(&pidG);
     MOTOR_SetSpeed(0, (speedToVoltage(0, pidG.Out)));
-    showDataPID(&pidG);
+    //showDataPID(&pidG);
   }
 
   void updatePIDD(float Sp)
@@ -288,20 +288,22 @@ namespace MOVE {
     pidD.Pv = speedD();
     calculPID(&pidD);
     MOTOR_SetSpeed(1, (speedToVoltage(1, pidD.Out)));
-    showDataPID(&pidD);
+    //showDataPID(&pidD);
   }
 
 
   void updatePIDMain(float speed, float dV)
   {
     static struct valeursPID pidSpeed = {};
-    pidSpeed.Kp = 2.0;
-    pidSpeed.Ki = 0.0;
-    pidSpeed.Kd = 0.0;
+    pidSpeed.Kp = 1.0;
+    pidSpeed.Ki = 0.08;
+    pidSpeed.Kd = 0.00005;
 
   
-    static float speedL = averageSpeedG();
-    static float speedR = averageSpeedD();
+    static float speedL;
+    static float speedR;
+    speedL = averageSpeedG();
+    speedR = averageSpeedD();
     float pv;
     //Ancien code
     //pidSpeed.Sp = (speedG() - speedD())*pidSpeed.dt;
@@ -385,7 +387,7 @@ namespace MOVE {
 
 using namespace MOVE;
 
-float ratio = 1.0;
+float dV = 0.0;
 
 void setup(){
   BoardInit();
@@ -401,16 +403,15 @@ void loop(){
   
   if (!ROBUS_IsBumper(0))
   {
-    ratio = 1.0;
+    dV = 0.0;
     x = 0, y = 0, theta = 0;
   }
   else
   {
-    ratio = 0.1;
+    dV = 20.0;
   }
 
-  
-  updatePIDMain(vitesse, ratio);
+  updatePIDMain(vitesse, dV);
   delay(5);
 
   /*
