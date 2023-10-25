@@ -44,6 +44,7 @@ namespace MOVE {
   } Distance;
   
   struct posRobot {
+      posRobot() : x(0), y(0), orientation(0){}
       float x;
       float y;
       float orientation;

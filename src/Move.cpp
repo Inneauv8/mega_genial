@@ -100,6 +100,7 @@ namespace MOVE {
     static float oldPulseD = 0.0;
     float pulseG = ENCODER_Read(0) - oldPulseG;
     float pulseD = ENCODER_Read(1) - oldPulseD;
+    
     float posRatio = pulseG/pulseD;
     
     float radius = ((wheelBaseDiameter * posRatio)/(1-posRatio));
