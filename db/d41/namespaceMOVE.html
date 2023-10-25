@@ -70,25 +70,15 @@ $(function() {
 </div><!-- top -->
 <div class="header">
   <div class="summary">
-<a href="#nested-classes">Classes</a> &#124;
 <a href="#func-members">Fonctions</a> &#124;
 <a href="#var-members">Variables</a>  </div>
   <div class="headertitle"><div class="title">Référence de l'espace de nommage MOVE</div></div>
 </div><!--header-->
 <div class="contents">
 <table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="nested-classes" name="nested-classes"></a>
-Classes</h2></td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../da/d0a/structMOVE_1_1posRobot.html">posRobot</a></td></tr>
-<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../db/d57/structMOVE_1_1valeursDistance.html">valeursDistance</a></td></tr>
-<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dd/d4f/structMOVE_1_1valeursPID.html">valeursPID</a></td></tr>
-<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
 Fonctions</h2></td></tr>
-<tr class="memitem:ac6099e79407c9c9a4e24998b02e725fb"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../db/d41/namespaceMOVE.html#ac6099e79407c9c9a4e24998b02e725fb">calculPID</a> (<a class="el" href="../../dd/d4f/structMOVE_1_1valeursPID.html">valeursPID</a> *incomingValues)</td></tr>
+<tr class="memitem:ac6099e79407c9c9a4e24998b02e725fb"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../db/d41/namespaceMOVE.html#ac6099e79407c9c9a4e24998b02e725fb">calculPID</a> (valeursPID *incomingValues)</td></tr>
 <tr class="memdesc:ac6099e79407c9c9a4e24998b02e725fb"><td class="mdescLeft">&#160;</td><td class="mdescRight">Calcul la valeur du PID.  <a href="../../db/d41/namespaceMOVE.html#ac6099e79407c9c9a4e24998b02e725fb">Plus de détails...</a><br /></td></tr>
 <tr class="separator:ac6099e79407c9c9a4e24998b02e725fb"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3c77d116a2ec2f00721de1482c39b622"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../db/d41/namespaceMOVE.html#a3c77d116a2ec2f00721de1482c39b622">distanceMoyenne</a> ()</td></tr>
@@ -108,7 +98,7 @@ Fonctions</h2></td></tr>
 <tr class="separator:a6dc94d29c95a22759d8046d06361f99e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a977e6d354da3e79a406d2e9610858eea"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../db/d41/namespaceMOVE.html#a977e6d354da3e79a406d2e9610858eea">moveRadius</a> (float xFinal, float yFinal, float finalOrientation)</td></tr>
 <tr class="separator:a977e6d354da3e79a406d2e9610858eea"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a315e036cd760b1e3d9320732fc4f7137"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../db/d41/namespaceMOVE.html#a315e036cd760b1e3d9320732fc4f7137">showDataPID</a> (<a class="el" href="../../dd/d4f/structMOVE_1_1valeursPID.html">valeursPID</a> *incomingValues)</td></tr>
+<tr class="memitem:a315e036cd760b1e3d9320732fc4f7137"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../db/d41/namespaceMOVE.html#a315e036cd760b1e3d9320732fc4f7137">showDataPID</a> (valeursPID *incomingValues)</td></tr>
 <tr class="separator:a315e036cd760b1e3d9320732fc4f7137"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aeb0e8b0520236ed0771fcc103d9c6886"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../db/d41/namespaceMOVE.html#aeb0e8b0520236ed0771fcc103d9c6886">updatePIDG</a> (float Sp)</td></tr>
 <tr class="separator:aeb0e8b0520236ed0771fcc103d9c6886"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -125,9 +115,9 @@ Fonctions</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="var-members" name="var-members"></a>
 Variables</h2></td></tr>
-<tr class="memitem:a6c3c1418fc5291ed3a440dd4c4e78ad6"><td class="memItemLeft" align="right" valign="top"><a class="el" href="../../db/d57/structMOVE_1_1valeursDistance.html">valeursDistance</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../db/d41/namespaceMOVE.html#a6c3c1418fc5291ed3a440dd4c4e78ad6">Distance</a> = {}</td></tr>
+<tr class="memitem:a6c3c1418fc5291ed3a440dd4c4e78ad6"><td class="memItemLeft" align="right" valign="top">valeursDistance&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../db/d41/namespaceMOVE.html#a6c3c1418fc5291ed3a440dd4c4e78ad6">Distance</a> = {}</td></tr>
 <tr class="separator:a6c3c1418fc5291ed3a440dd4c4e78ad6"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab0fc3f5b24c7ec44768b264324f18817"><td class="memItemLeft" align="right" valign="top"><a class="el" href="../../da/d0a/structMOVE_1_1posRobot.html">posRobot</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../db/d41/namespaceMOVE.html#ab0fc3f5b24c7ec44768b264324f18817">position</a> = {}</td></tr>
+<tr class="memitem:ab0fc3f5b24c7ec44768b264324f18817"><td class="memItemLeft" align="right" valign="top">posRobot&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../db/d41/namespaceMOVE.html#ab0fc3f5b24c7ec44768b264324f18817">position</a> = {}</td></tr>
 <tr class="separator:ab0fc3f5b24c7ec44768b264324f18817"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:abe8624d377434776ac057e2fe59d30ac"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../db/d41/namespaceMOVE.html#abe8624d377434776ac057e2fe59d30ac">pulseToDist</a> = M_PI*WHEEL_DIAMETER/3200.0</td></tr>
 <tr class="separator:abe8624d377434776ac057e2fe59d30ac"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -188,7 +178,7 @@ Variables</h2></td></tr>
         <tr>
           <td class="memname">void MOVE::calculPID </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="../../dd/d4f/structMOVE_1_1valeursPID.html">valeursPID</a> *&#160;</td>
+          <td class="paramtype">valeursPID *&#160;</td>
           <td class="paramname"><em>incomingValues</em></td><td>)</td>
           <td></td>
         </tr>
@@ -363,7 +353,7 @@ Variables</h2></td></tr>
         <tr>
           <td class="memname">void MOVE::showDataPID </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="../../dd/d4f/structMOVE_1_1valeursPID.html">valeursPID</a> *&#160;</td>
+          <td class="paramtype">valeursPID *&#160;</td>
           <td class="paramname"><em>incomingValues</em></td><td>)</td>
           <td></td>
         </tr>
@@ -523,7 +513,7 @@ Variables</h2></td></tr>
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="../../db/d57/structMOVE_1_1valeursDistance.html">valeursDistance</a> MOVE::Distance = {}</td>
+          <td class="memname">valeursDistance MOVE::Distance = {}</td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -564,7 +554,7 @@ Variables</h2></td></tr>
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="../../da/d0a/structMOVE_1_1posRobot.html">posRobot</a> MOVE::position = {}</td>
+          <td class="memname">posRobot MOVE::position = {}</td>
         </tr>
       </table>
 </div><div class="memdoc">

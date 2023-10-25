@@ -1,27 +1,24 @@
 var indexSectionsWithContent =
 {
-  0: "acdgikmoprstuvxy",
-  1: "pv",
-  2: "m",
-  3: "acdmrsuv",
-  4: "dgikopstvxy"
+  0: "acdmprstuvxy",
+  1: "m",
+  2: "acdmrsu",
+  3: "dpstvxy"
 };
 
 var indexSectionNames =
 {
   0: "all",
-  1: "classes",
-  2: "namespaces",
-  3: "functions",
-  4: "variables"
+  1: "namespaces",
+  2: "functions",
+  3: "variables"
 };
 
 var indexSectionLabels =
 {
   0: "Tout",
-  1: "Classes",
-  2: "Espaces de nommage",
-  3: "Fonctions",
-  4: "Variables"
+  1: "Espaces de nommage",
+  2: "Fonctions",
+  3: "Variables"
 };
 
