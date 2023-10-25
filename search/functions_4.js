@@ -1,4 +1,5 @@
 var searchData=
 [
-  ['posrobot_0',['posRobot',['../da/d0a/structMOVE_1_1posRobot.html#a35f2b8b1b04c55f6dacdc3af9dee6d12',1,'MOVE::posRobot']]]
+  ['nonan_0',['noNan',['../db/d41/namespaceMOVE.html#a9362089fb419958f57e8dad952b26f66',1,'MOVE']]],
+  ['nozero_1',['noZero',['../db/d41/namespaceMOVE.html#a6517d52ce576ae7e9ed2c5cf0998cb41',1,'MOVE']]]
 ];

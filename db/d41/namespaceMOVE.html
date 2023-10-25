@@ -91,8 +91,12 @@ Fonctions</h2></td></tr>
 <tr class="memitem:ac6099e79407c9c9a4e24998b02e725fb"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../db/d41/namespaceMOVE.html#ac6099e79407c9c9a4e24998b02e725fb">calculPID</a> (<a class="el" href="../../dd/d4f/structMOVE_1_1valeursPID.html">valeursPID</a> *incomingValues)</td></tr>
 <tr class="memdesc:ac6099e79407c9c9a4e24998b02e725fb"><td class="mdescLeft">&#160;</td><td class="mdescRight">Calcul la valeur du PID.  <a href="../../db/d41/namespaceMOVE.html#ac6099e79407c9c9a4e24998b02e725fb">Plus de détails...</a><br /></td></tr>
 <tr class="separator:ac6099e79407c9c9a4e24998b02e725fb"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9362089fb419958f57e8dad952b26f66"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../db/d41/namespaceMOVE.html#a9362089fb419958f57e8dad952b26f66">noNan</a> (float value)</td></tr>
+<tr class="memdesc:a9362089fb419958f57e8dad952b26f66"><td class="mdescLeft">&#160;</td><td class="mdescRight">Retourne les distances parcourues en pouces par les moteurs.  <a href="../../db/d41/namespaceMOVE.html#a9362089fb419958f57e8dad952b26f66">Plus de détails...</a><br /></td></tr>
+<tr class="separator:a9362089fb419958f57e8dad952b26f66"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6517d52ce576ae7e9ed2c5cf0998cb41"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../db/d41/namespaceMOVE.html#a6517d52ce576ae7e9ed2c5cf0998cb41">noZero</a> (float value)</td></tr>
+<tr class="separator:a6517d52ce576ae7e9ed2c5cf0998cb41"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3c77d116a2ec2f00721de1482c39b622"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../db/d41/namespaceMOVE.html#a3c77d116a2ec2f00721de1482c39b622">distanceMoyenne</a> ()</td></tr>
-<tr class="memdesc:a3c77d116a2ec2f00721de1482c39b622"><td class="mdescLeft">&#160;</td><td class="mdescRight">Retourne les distances parcourues en pouces par les moteurs.  <a href="../../db/d41/namespaceMOVE.html#a3c77d116a2ec2f00721de1482c39b622">Plus de détails...</a><br /></td></tr>
 <tr class="separator:a3c77d116a2ec2f00721de1482c39b622"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a7fa31709f2c570e721ecd2f51ffb1752"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../db/d41/namespaceMOVE.html#a7fa31709f2c570e721ecd2f51ffb1752">updatePos</a> ()</td></tr>
 <tr class="separator:a7fa31709f2c570e721ecd2f51ffb1752"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -220,14 +224,6 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Retourne les distances parcourues en pouces par les moteurs. </p>
-<dl class="params"><dt>Paramètres</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">incomingValues</td><td>PID values </td></tr>
-  </table>
-  </dd>
-</dl>
-
 </div>
 </div>
 <a id="a4c2535d28abd5a94e9dbaed21a4a62b3" name="a4c2535d28abd5a94e9dbaed21a4a62b3"></a>
@@ -292,6 +288,50 @@ Variables</h2></td></tr>
           <td></td>
           <td>)</td>
           <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a9362089fb419958f57e8dad952b26f66" name="a9362089fb419958f57e8dad952b26f66"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9362089fb419958f57e8dad952b26f66">&#9670;&#160;</a></span>noNan()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">float MOVE::noNan </td>
+          <td>(</td>
+          <td class="paramtype">float&#160;</td>
+          <td class="paramname"><em>value</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Retourne les distances parcourues en pouces par les moteurs. </p>
+<dl class="params"><dt>Paramètres</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">incomingValues</td><td>PID values </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="a6517d52ce576ae7e9ed2c5cf0998cb41" name="a6517d52ce576ae7e9ed2c5cf0998cb41"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a6517d52ce576ae7e9ed2c5cf0998cb41">&#9670;&#160;</a></span>noZero()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">float MOVE::noZero </td>
+          <td>(</td>
+          <td class="paramtype">float&#160;</td>
+          <td class="paramname"><em>value</em></td><td>)</td>
+          <td></td>
         </tr>
       </table>
 </div><div class="memdoc">
