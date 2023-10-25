@@ -7,17 +7,18 @@ Date de création : 17/10/2023
 #ifndef MOVE_H
 #define MOVE_H
 
+#include <math.h>
 
 namespace MOVE {
   // *************************************************************************************************
   //  CONSTANTES
   // *************************************************************************************************
   /* VIDE */
-  #define wheelBaseDiameter 7.480315
-  #define wheelDiameter 2.992126
+  #define WHEEL_BASE_DIAMETER 7.480315
+  #define WHEEL_DIAMETER 2.992126
 
 
-  float pulseToDist = M_PI*wheelDiameter/3200.0;
+  float pulseToDist = M_PI*WHEEL_DIAMETER/3200.0;
 
   // *************************************************************************************************
   //  STRUCTURES ET UNIONS
@@ -41,14 +42,17 @@ namespace MOVE {
   struct valeursDistance {
     float G;
     float D;
-  } Distance;
+  };
   
   struct posRobot {
       float x;
       float y;
       float orientation;
 
-  } position;
+  };
+
+  extern valeursDistance Distance;
+  extern posRobot position;
   
   // *************************************************************************************************
   //  PROTOTYPE DE FONCTIONS

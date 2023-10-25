@@ -20,6 +20,9 @@ Modifications :
 #include "Move.h"
 
 namespace MOVE {
+
+  valeursDistance Distance = {};
+  posRobot position = {};
   // *************************************************************************************************
   //  CONSTANTES
   // *************************************************************************************************
@@ -102,8 +105,8 @@ namespace MOVE {
     float pulseD = ENCODER_Read(1) - oldPulseD;
     float posRatio = pulseG/pulseD;
     
-    float radius = ((wheelBaseDiameter * posRatio)/(1-posRatio));
-    float radiusRobot = radius + wheelBaseDiameter/2;
+    float radius = ((WHEEL_BASE_DIAMETER * posRatio)/(1-posRatio));
+    float radiusRobot = radius + WHEEL_BASE_DIAMETER/2;
     position.orientation = pulseG/radius + M_PI/2;
     position.x = radiusRobot - (radiusRobot*cos(position.orientation));
     position.y = radiusRobot * sin(position.orientation);
@@ -345,8 +348,8 @@ namespace MOVE {
     float arcCercleAngle = finalOrientation - initialOrientation;
     float distRobot = 2*moveRadiusRobot*M_PI*abs(arcCercleAngle)/(2*M_PI);
     float time = distRobot/vitesse;
-    float speedBig = 2*(moveRadiusRobot + wheelBaseDiameter/2)*M_PI*abs(arcCercleAngle)/(2*M_PI*time);
-    float speedSmall= 2*(moveRadiusRobot - wheelBaseDiameter/2)*M_PI*abs(arcCercleAngle)/(2*M_PI*time);
+    float speedBig = 2*(moveRadiusRobot + WHEEL_BASE_DIAMETER/2)*M_PI*abs(arcCercleAngle)/(2*M_PI*time);
+    float speedSmall= 2*(moveRadiusRobot - WHEEL_BASE_DIAMETER/2)*M_PI*abs(arcCercleAngle)/(2*M_PI*time);
     if (arcCercleAngle < 0)
     {
       return speedSmall;
@@ -363,8 +366,8 @@ namespace MOVE {
     float arcCercleAngle = finalOrientation - initialOrientation;
     float distRobot = 2*moveRadiusRobot*M_PI*abs(arcCercleAngle)/(2*M_PI);
     float time = distRobot/vitesse;
-    float speedBig = 2*(moveRadiusRobot + wheelBaseDiameter/2)*M_PI*abs(arcCercleAngle)/(2*M_PI*time);
-    float speedSmall= 2*(moveRadiusRobot - wheelBaseDiameter/2)*M_PI*abs(arcCercleAngle)/(2*M_PI*time);
+    float speedBig = 2*(moveRadiusRobot + WHEEL_BASE_DIAMETER/2)*M_PI*abs(arcCercleAngle)/(2*M_PI*time);
+    float speedSmall= 2*(moveRadiusRobot - WHEEL_BASE_DIAMETER/2)*M_PI*abs(arcCercleAngle)/(2*M_PI*time);
     if (arcCercleAngle > 0)
     {
       return speedSmall;
