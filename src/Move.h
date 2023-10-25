@@ -18,7 +18,7 @@ namespace MOVE {
   #define WHEEL_DIAMETER 2.992126
 
 
-  float pulseToDist = M_PI*WHEEL_DIAMETER/3200.0;
+  extern float pulseToDist;
 
   // *************************************************************************************************
   //  STRUCTURES ET UNIONS
