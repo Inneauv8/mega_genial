@@ -1,8 +1,7 @@
 var searchData=
 [
-  ['showdatapid_0',['showDataPID',['../db/d41/namespaceMOVE.html#a315e036cd760b1e3d9320732fc4f7137',1,'MOVE']]],
-  ['speed_1',['speed',['../db/d41/namespaceMOVE.html#afacebbbaac95b5115c2219b8a6d8eefd',1,'MOVE']]],
-  ['speedd_2',['speedD',['../db/d41/namespaceMOVE.html#a6b30eeb2f9b172ec7797dbb7937c3c1d',1,'MOVE']]],
-  ['speedg_3',['speedG',['../db/d41/namespaceMOVE.html#a5ee9edeb768f1490126e11acb7d1e6c1',1,'MOVE']]],
-  ['speedtovoltage_4',['speedToVoltage',['../db/d41/namespaceMOVE.html#a6dc94d29c95a22759d8046d06361f99e',1,'MOVE']]]
+  ['updatepidd_0',['updatePIDD',['../db/d41/namespaceMOVE.html#a8dcfea77956aa54f7137d14e17063994',1,'MOVE']]],
+  ['updatepidg_1',['updatePIDG',['../db/d41/namespaceMOVE.html#aeb0e8b0520236ed0771fcc103d9c6886',1,'MOVE']]],
+  ['updatepidmain_2',['updatePIDMain',['../db/d41/namespaceMOVE.html#aa9b04ea910034c127b3bf0b41160b7a7',1,'MOVE']]],
+  ['updatepos_3',['updatePos',['../db/d41/namespaceMOVE.html#a7fa31709f2c570e721ecd2f51ffb1752',1,'MOVE']]]
 ];
