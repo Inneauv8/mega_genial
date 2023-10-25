@@ -47,6 +47,7 @@ namespace MOVE {
       float x;
       float y;
       float orientation;
+  };
 
   extern valeursDistance Distance;
   extern posRobot position;
