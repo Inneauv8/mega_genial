@@ -48,7 +48,7 @@ namespace MOVE {
   //position de départ du robot (x: 4.5 po ; y : 7.5 po)
   float startPos[] = {int(8.24175), int(10.12601)};
 
-  float vitesse = 15.0;
+  float vitesse = 5.0;
     
   float x = 0, y = 0, theta = 0;
 
@@ -97,7 +97,7 @@ float noNan(float value)
   {
     if (value != value)
     {
-      return 100000;
+      return 1000000000;
     }
     return value;
   }
@@ -106,12 +106,21 @@ float noNan(float value)
   {
     if (value == 0)
     {
-      return 0.0000000000001;
+      return 0.000001;
     }
     return value;
   }
 
-
+  void printData(float one, float two, float three, float four, float five, float six, float seven, float eight, float nine, float ten)
+  {
+    float data[10] = {one, two, three, four, five, six, seven, eight, nine, ten};
+    for(int i = 0; i < 10; i++)
+    {
+      Serial.print(data[i]);
+      Serial.print("\t");
+    }
+    Serial.println();
+  }
 
 
 
@@ -120,21 +129,37 @@ float noNan(float value)
     return (Distance.D+Distance.G)/2;
   }
 
+  float correctAngle(float angle)
+  {
+    int correction = angle/(2*M_PI);
+    if(angle < -M_PI)
+      {
+        angle -= correction*2*M_PI;
+      }
+	  if(angle > M_PI)
+      {
+        angle -= correction*2*M_PI;
+      }
+  }
+
   void updatePos()
   {
 
     static float oldPulseG = 0.0;
     static float oldPulseD = 0.0;
-static float oldPosX = 0.0;
+    static float oldPosX = 0.0;
     static float oldPosY = 0.0;
     static float positionX = 0.0;
     static float positionY = 0.0;
+    static float ka = 2.0;
+    static float kd = 2.0;
     float pulseG = ENCODER_Read(0) - oldPulseG;
     float pulseD = ENCODER_Read(1) - oldPulseD;
     float posRatio = pulseG/noZero(pulseD);
     float radius = (WHEEL_BASE_DIAMETER * posRatio)/noZero(1-posRatio);
     float radiusRobot;
     float angle = 0.0;
+
     if (posRatio > 1 || posRatio < -1)
     {
       angle = pulseToDist * pulseG / noZero(radius);
@@ -145,26 +170,14 @@ static float oldPosX = 0.0;
       angle = pulseToDist * pulseD / noZero(radius + WHEEL_BASE_DIAMETER);
       radiusRobot = radius + WHEEL_BASE_DIAMETER/2;
     }
-    Serial.print(angle);
-    Serial.print("\t");
-    position.orientation += angle;
-    
-    positionX = ((radiusRobot * cos(position.orientation)) - radiusRobot);
-    positionY = radiusRobot * sin(position.orientation);
-position.x += positionX;
-    position.y += positionY;
 
-    Serial.print(sin(angle), 6);
-    Serial.print("\t");
-    Serial.print(cos(angle), 6);
-    Serial.print("\t");
-    Serial.print((radiusRobot*cos(angle)) - radiusRobot, 6);
-    Serial.print("\t");
+    position.orientation += ka * angle;
+    //position.orientation = correctAngle(position.orientation);
+    position.x += kd * ((radiusRobot * (cos(position.orientation) - cos(position.orientation-angle))));
+    position.y += kd * radiusRobot * (sin(position.orientation) - sin(position.orientation-angle));
 
     oldPulseG = ENCODER_Read(0);
     oldPulseD = ENCODER_Read(1);
-    oldPosX = positionX;
-    oldPosY = positionY;
     
   }
 
@@ -276,49 +289,29 @@ position.x += positionX;
     return voltage;
   }
 
-  float moveRadius(float xFinal, float yFinal, float finalOrientation)
+  long double moveRadius(float xFinal, float yFinal, float finalOrientation)
   {
     float x1 = position.x;
     float y1 = position.y;
-    Serial.print(x1);
-    Serial.print("\t");
-    Serial.print(y1);
-    Serial.print("\t");
     
-    float slope1 = (yFinal-y1)/(xFinal-x1);
-    float slope2 = tan(finalOrientation);
-  if(slope1 == 0)
-      {
-        slope1 = 0.00001;
-      }
-      if(slope1 != slope1)
-      {
-        slope1 = 100000;
-      }
-      if(slope2 == 0)
-      {
-        slope2 = 0.00001;
-      }
-      if(slope2 != slope2)
-      {
-        slope2 = 100000;
-      }
-      Serial.print(slope1);
-      Serial.print("\t");
-      Serial.print(slope2);
-      Serial.print("\t");
-      float deltaInverseSlope = (1/slope2 - 1/slope1);
-      if(deltaInverseSlope == 0)
-      {
-        deltaInverseSlope = 0.00001;
-      }
-      float b1 = y1 + (yFinal - y1)/2 + (x1 + (xFinal - x1)/2) * (1/slope1);
-      float b2 = yFinal + xFinal/slope2;
-      float xRadius = (b2 - b1)/(deltaInverseSlope);
-      float yRadius = b1 - xRadius/slope1;
-      float radius = sqrt(sq(xRadius - x1) + sq(yRadius - y1));
-      return radius;
+    float slope1 = noZero(noNan((yFinal-y1)/(xFinal-x1)));
+    float slope2 = noZero(noNan(tan(finalOrientation)));
+    float deltaInverseSlope = noNan(1/slope2 - 1/slope1);
+    long double b1 = y1 + (yFinal - y1)/2 + (x1 + (xFinal - x1)/2) * (1/slope1);
+    long double b2 = yFinal + xFinal/slope2;
+    long double xRadius = (b2 - b1)/(deltaInverseSlope);
+    long double yRadius = b1 - xRadius/slope1;
+    long double radius = sqrt(sq(xRadius - x1) + sq(yRadius - y1));
+    if (isinf(radius) == 1)
+    {
+      radius = 1000000000;
     }
+    if (isinf(radius) == -1)
+    {
+      radius = -1000000000;
+    }
+    return radius;
+  }
 
   void showDataPID(valeursPID *incomingValues)
   {
@@ -383,12 +376,11 @@ position.x += positionX;
     pidSpeed.Ki = 1.0;
     pidSpeed.Kd = 0.0005;
 
-  
     static float speedL;
     static float speedR;
     speedL = speedG();
     speedR = speedD();
-    float pv;
+    //float pv;
     //Ancien code
     //pidSpeed.Sp = (speedG() - speedD())*pidSpeed.dt;
     //pidSpeed.Pv = (ENCODER_Read(0) - ENCODER_Read(1));
@@ -428,9 +420,9 @@ position.x += positionX;
     float initialOrientation = position.orientation;
     float arcCercleAngle = finalOrientation - initialOrientation;
     float distRobot = 2*moveRadiusRobot*M_PI*abs(arcCercleAngle)/(2*M_PI);
-    float time = distRobot/vitesse;
-    float speedBig = 2*(moveRadiusRobot + WHEEL_BASE_DIAMETER/2)*M_PI*abs(arcCercleAngle)/(2*M_PI*time);
-    float speedSmall= 2*(moveRadiusRobot - WHEEL_BASE_DIAMETER/2)*M_PI*abs(arcCercleAngle)/(2*M_PI*time);
+    float time = noNan(distRobot/vitesse);
+    float speedBig = 2*(moveRadiusRobot + WHEEL_BASE_DIAMETER/2)*M_PI*noNan(abs(arcCercleAngle)/(2*M_PI*time));
+    float speedSmall= 2*(moveRadiusRobot - WHEEL_BASE_DIAMETER/2)*M_PI*noNan(abs(arcCercleAngle)/(2*M_PI*time));
     if (arcCercleAngle < 0)
     {
       return speedSmall;
@@ -446,9 +438,9 @@ position.x += positionX;
     float initialOrientation = position.orientation;
     float arcCercleAngle = finalOrientation - initialOrientation;
     float distRobot = 2*moveRadiusRobot*M_PI*abs(arcCercleAngle)/(2*M_PI);
-    float time = distRobot/vitesse;
-    float speedBig = 2*(moveRadiusRobot + WHEEL_BASE_DIAMETER/2)*M_PI*abs(arcCercleAngle)/(2*M_PI*time);
-    float speedSmall= 2*(moveRadiusRobot - WHEEL_BASE_DIAMETER/2)*M_PI*abs(arcCercleAngle)/(2*M_PI*time);
+    float time = noNan(distRobot/vitesse);
+    float speedBig = 2*(moveRadiusRobot + WHEEL_BASE_DIAMETER/2)*M_PI*noNan(abs(arcCercleAngle)/2*M_PI*time);
+    float speedSmall= 2*(moveRadiusRobot - WHEEL_BASE_DIAMETER/2)*M_PI*noNan(abs(arcCercleAngle)/2*M_PI*time);
     if (arcCercleAngle > 0)
     {
       return speedSmall;
@@ -463,13 +455,34 @@ position.x += positionX;
   {
     float radius = moveRadius(xFinal, yFinal, finalOrientation);
     float dV = radiusToSpeedG(radius, finalOrientation) - radiusToSpeedD(radius, finalOrientation);
-    updatePIDMain(vitesse, dV);
+    //updatePIDMain(vitesse, dV);
     updatePos();
-Serial.print(radius);
-    Serial.print("\t");
-    Serial.print(dV);
+    printData(radius, radiusToSpeedG(radius, finalOrientation), radiusToSpeedD(radius, finalOrientation), dV, 0 ,0 ,0 ,0 ,0 , 0);
+
   }
 
+  void printPosition(bool type)
+  {
+    if(type)
+    {
+      Serial.print(position.x);
+      Serial.print("\t");
+      Serial.print(position.y);
+      Serial.print("\t");
+      Serial.print(position.orientation);
+      Serial.print("\t");
+    }
+    if(!type)
+    {
+      Serial.print(x);
+      Serial.print("\t");
+      Serial.print(y);
+      Serial.print("\t");
+      Serial.print(theta);
+      Serial.print("\t");
+    }
+    Serial.println();
+  }
 }
 
 using namespace MOVE;
@@ -484,36 +497,34 @@ void setup(){
   ENCODER_Reset(0);
   ENCODER_Reset(1);
   updatePos();
-  position.x = 0.0;
-  position.y = 0.0;
 }
 
 void loop(){
 
   
-  if (!ROBUS_IsBumper(0))
+  if (ROBUS_IsBumper(0))
   {
-    dV = 0.0;
-    updatePos();
+    //dV = 0.0;
+    
+    x = 3, y = 0, theta = 0;
   }
   else
   {
-    dV = 20.0;
-  x = 0, y = 20, theta = M_PI/4;
-    Serial.print("\t");
-    Serial.print(x);
-    Serial.print("\t");
-    Serial.println(theta);
-
+    //dV = 20.0;
+  
+  
   }
-  Serial.print(position.x,6);
-  Serial.print("\t");
-  Serial.print(position.y);
-  Serial.print("\t");
-  Serial.println(position.orientation);
-  //move(x, y, theta);
-  delay(5);
 
+  if(position.x != x || position.y != y || position.orientation != theta)
+  {
+    move(x, y, theta);
+  }
+  //printPosition(0);
+  //printPosition(1);
+  delay(5);
+  
+
+  
   /*
   prendre les deux vitesses, comparer entre elles pour trouver l'erreur, ajuster la vitesse pour atteindre SP. 
 

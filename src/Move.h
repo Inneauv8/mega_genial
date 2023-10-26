@@ -63,7 +63,7 @@ namespace MOVE {
   float averageSpeedG();
   float averageSpeedD();
   float speedToVoltage(bool motor, float speed);
-  float moveRadius(float xFinal, float yFinal, float finalOrientation);
+  long double moveRadius(float xFinal, float yFinal, float finalOrientation);
   void showDataPID(valeursPID *incomingValues);
   void updatePIDG(float Sp);
   void updatePIDD(float Sp);
