@@ -116,7 +116,7 @@ float noNan(float value)
     float data[10] = {one, two, three, four, five, six, seven, eight, nine, ten};
     for(int i = 0; i < 10; i++)
     {
-      Serial.print(data[i]);
+      Serial.print(data[i], 6);
       Serial.print("\t");
     }
     Serial.println();
@@ -135,11 +135,17 @@ float noNan(float value)
     if(angle < -M_PI)
       {
         angle -= correction*2*M_PI;
+        Serial.print("here");
       }
 	  if(angle > M_PI)
       {
         angle -= correction*2*M_PI;
+        Serial.print("or here");
       }
+    else
+    {
+      return angle;
+    }
   }
 
   void updatePos()
@@ -151,8 +157,8 @@ float noNan(float value)
     static float oldPosY = 0.0;
     static float positionX = 0.0;
     static float positionY = 0.0;
-    static float ka = 2.0;
-    static float kd = 2.0;
+    static float ka = 1.137;
+    static float kx = 1.0505;
     float pulseG = ENCODER_Read(0) - oldPulseG;
     float pulseD = ENCODER_Read(1) - oldPulseD;
     float posRatio = pulseG/noZero(pulseD);
@@ -172,9 +178,9 @@ float noNan(float value)
     }
 
     position.orientation += ka * angle;
-    //position.orientation = correctAngle(position.orientation);
-    position.x += kd * ((radiusRobot * (cos(position.orientation) - cos(position.orientation-angle))));
-    position.y += kd * radiusRobot * (sin(position.orientation) - sin(position.orientation-angle));
+    position.orientation = correctAngle(position.orientation);
+    position.x += kx * ((radiusRobot * (cos(position.orientation) - cos(position.orientation-angle))));
+    position.y += radiusRobot * (sin(position.orientation) - sin(position.orientation-angle));
 
     oldPulseG = ENCODER_Read(0);
     oldPulseD = ENCODER_Read(1);
@@ -415,15 +421,19 @@ float noNan(float value)
     //showDataPID(&pidSpeed);
   }
   
-  float radiusToSpeedG(float moveRadiusRobot, float finalOrientation)
+  float radiusToSpeedG(double moveRadiusRobot, float finalOrientation)
   {
     float initialOrientation = position.orientation;
     float arcCercleAngle = finalOrientation - initialOrientation;
-    float distRobot = 2*moveRadiusRobot*M_PI*abs(arcCercleAngle)/(2*M_PI);
+    double distRobot = moveRadiusRobot*abs(arcCercleAngle);
     float time = noNan(distRobot/vitesse);
-    float speedBig = 2*(moveRadiusRobot + WHEEL_BASE_DIAMETER/2)*M_PI*noNan(abs(arcCercleAngle)/(2*M_PI*time));
-    float speedSmall= 2*(moveRadiusRobot - WHEEL_BASE_DIAMETER/2)*M_PI*noNan(abs(arcCercleAngle)/(2*M_PI*time));
-    if (arcCercleAngle < 0)
+    double speedBig = (moveRadiusRobot + WHEEL_BASE_DIAMETER/2)*noNan(abs(arcCercleAngle)/time);
+    double speedSmall= (moveRadiusRobot - WHEEL_BASE_DIAMETER/2)*noNan(abs(arcCercleAngle)/time);
+    if (arcCercleAngle < 1 && arcCercleAngle > -1)
+    {
+      return vitesse;
+    }
+    if (arcCercleAngle < 1)
     {
       return speedSmall;
     }
@@ -433,15 +443,20 @@ float noNan(float value)
     }
   }
 
-  float radiusToSpeedD(float moveRadiusRobot, float finalOrientation)
+  float radiusToSpeedD(double moveRadiusRobot, float finalOrientation)
   {
     float initialOrientation = position.orientation;
     float arcCercleAngle = finalOrientation - initialOrientation;
-    float distRobot = 2*moveRadiusRobot*M_PI*abs(arcCercleAngle)/(2*M_PI);
+    double distRobot = moveRadiusRobot*abs(arcCercleAngle);
     float time = noNan(distRobot/vitesse);
-    float speedBig = 2*(moveRadiusRobot + WHEEL_BASE_DIAMETER/2)*M_PI*noNan(abs(arcCercleAngle)/2*M_PI*time);
-    float speedSmall= 2*(moveRadiusRobot - WHEEL_BASE_DIAMETER/2)*M_PI*noNan(abs(arcCercleAngle)/2*M_PI*time);
-    if (arcCercleAngle > 0)
+    double speedBig = (moveRadiusRobot + WHEEL_BASE_DIAMETER/2)*noNan(abs(arcCercleAngle)/time);
+    double speedSmall= (moveRadiusRobot - WHEEL_BASE_DIAMETER/2)*noNan(abs(arcCercleAngle)/time);
+    
+    if (arcCercleAngle < 1 && arcCercleAngle > -1)
+    {
+      return vitesse;
+    }
+    if (arcCercleAngle > 1)
     {
       return speedSmall;
     }
@@ -453,12 +468,92 @@ float noNan(float value)
 
   void move(float xFinal, float yFinal, float finalOrientation)
   {
-    float radius = moveRadius(xFinal, yFinal, finalOrientation);
-    float dV = radiusToSpeedG(radius, finalOrientation) - radiusToSpeedD(radius, finalOrientation);
-    //updatePIDMain(vitesse, dV);
+    /*float oldTime = 0.0;
+    float dt = millis() - oldTime;
+    float initialOrientation = position.orientation;
+    float arcCercleAngle = finalOrientation - initialOrientation;
+    static float radius = 0.0;
+    static double distRobot = 0.0;
+    if (arcCercleAngle == 0)
+    {
+      distRobot = sqrt(sq(xFinal - position.x) + sq(yFinal - position.y));
+      radius = 1000000000;
+    }
+    else
+    {
+      radius = moveRadius(xFinal, yFinal, finalOrientation);
+      distRobot = radius*abs(arcCercleAngle);
+    }
+    
+    static struct valeursPID pidDist = {};
+    pidDist.Kp = 2.0;
+    pidDist.Ki = 0.0;
+    pidDist.Kd = 0.0;
+    pidDist.Sp = 0.0;
+    pidDist.Pv = distRobot;
+    calculPID(&pidDist);
+    
+    float speedG = radiusToSpeedG(radius, finalOrientation);
+    float speedD = radiusToSpeedD(radius, finalOrientation);
+    float dV = speedG- speedD;
+    static float averageSpeed = 0.0;
+    
+    static float oldPID = 0.0;
+    averageSpeed = averageSpeed + ((pidDist.Out - oldPID)/dt);
     updatePos();
-    printData(radius, radiusToSpeedG(radius, finalOrientation), radiusToSpeedD(radius, finalOrientation), dV, 0 ,0 ,0 ,0 ,0 , 0);
+    printData(arcCercleAngle, radius, distRobot, speedG, speedD, dV, averageSpeed, pidDist.Out, position.y, position.orientation);
+    updatePIDMain(averageSpeed, dV);
+    oldPID = pidDist.Out; */
+    
+    /*if(distRobot < 0.3 && distRobot > -0.3)
+    {
+      averageSpeed = 0.0;
+    }*/
 
+    /*float time1 = 0.0;
+    float time2 = millis();
+    float dt = time2 - time1;
+    float radius = moveRadius(xFinal, yFinal, finalOrientation);
+    float speedG = radiusToSpeedG(radius, finalOrientation);
+    float speedD = radiusToSpeedD(radius, finalOrientation);
+    float dV = speedG- speedD;
+    float averageSpeed = (speedG + speedD) / 2;
+    float distance = sqrt(sq(xFinal - position.x) + sq(yFinal - position.y));
+
+    static struct valeursPID pidDist = {};
+    pidDist.Kp = 2.0;
+    pidDist.Ki = 0.01;
+    pidDist.Kd = 0.001;
+    pidDist.Sp = 0.0;
+    pidDist.Pv = distance;
+    calculPID(&pidDist);
+    float  correctSpeed = pidDist.Out/dt;
+    averageSpeed = averageSpeed - correctSpeed;
+
+    updatePIDMain(averageSpeed, dV);
+    updatePos();
+    printData(radius, speedG, speedD , dV , averageSpeed , distance ,0 , 0, 0, 0);
+    */
+
+    //*************************************************************************
+    //! @param updatePIDMain() : prend une vitesse et une différence de vitesse
+    //  corrige pour que les deux moteurs aies une différence de vitesse(courbure)
+    //  le robot se déplace à la vitesse donnée
+    //
+    //! @param moveRadius() : prend les positions en x et et l'orientation
+    //  retourne le rayon de courbure que le robot doit prendre pour atteindre un point
+    //  avec la bonne orientation
+    // 
+    //! @param radiusToSpeed() (gauche et droit) : prends le rayon et l'orientation finale
+    //!  retourne la vitesse que chaque roue doit prendre, se basant sur @param vitesse.
+    //**********************************************************************************
+    /*J'ai besoins que move fasse:
+    - prenne une position finale
+    - se déplace vers cette position
+    - s'arrête à cette position
+
+
+    */
   }
 
   void printPosition(bool type)
@@ -499,14 +594,20 @@ void setup(){
   updatePos();
 }
 
-void loop(){
+void loop()
+{
+  
+  
+  MOTOR_SetSpeed(0, 0);
+  MOTOR_SetSpeed(1, 0);
 
   
-  if (ROBUS_IsBumper(0))
+  
+ /*if (ROBUS_IsBumper(0))
   {
     //dV = 0.0;
     
-    x = 3, y = 0, theta = 0;
+    x = 0, y = 3, theta = 0;
   }
   else
   {
@@ -514,14 +615,32 @@ void loop(){
   
   
   }
+  move(x, y, theta);
+  
+  delay(5);*/
+  /*if(position.x != y || position.y != y)
+  {
+    move(x, y, theta);
+  }*/
 
-  if(position.x != x || position.y != y || position.orientation != theta)
+  /*if(position.x > (x+0.3) && position.x < (x-0.3))
   {
     move(x, y, theta);
   }
-  //printPosition(0);
-  //printPosition(1);
-  delay(5);
+  if(position.y > (y+0.3) && position.y < (y-0.3))
+  {
+    move(x, y, theta);
+  }
+  if(position.orientation > (theta+0.3) && position.orientation < (theta-0.3))
+  {
+    move(x, y, theta);
+  }*/
+  /*else
+  {
+    updatePIDMain(0,0);
+  }*/
+  
+  //delay(5);
   
 
   

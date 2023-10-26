@@ -68,8 +68,8 @@ namespace MOVE {
   void updatePIDG(float Sp);
   void updatePIDD(float Sp);
   void updatePIDMain(float speed, float dV);
-  float radiusToSpeedG(float moveRadiusRobot, float finalOrientation);
-  float radiusToSpeedD(float moveRadiusRobot, float finalOrientation);
+  float radiusToSpeedG(double moveRadiusRobot, float finalOrientation);
+  float radiusToSpeedD(double moveRadiusRobot, float finalOrientation);
   void move(float xFinal, float yFinal, float finalOrientation);
 
   // *************************************************************************************************
