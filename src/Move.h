@@ -54,7 +54,7 @@ namespace MOVE {
   //  PROTOTYPE DE FONCTIONS
   // *************************************************************************************************
 
-  void calculPID(valeursPID *incomingValues);
+  float calculPID(valeursPID *incomingValues, bool resetIOnZeroError = true);
   void updatePos();
   float speedG();
   float speedD();
