@@ -510,9 +510,9 @@ float noNan(float value)
   void move(float xFinal, float yFinal, float finalOrientation)
   {
 
-    static float prevX = 0.138422151245;
-    static float prevY = 0.9453893654;
-    static float prevOrientation = 0.786534354854243542;
+    static float prevX = 0.0;
+    static float prevY = 0.0;
+    static float prevOrientation = 0.0;
     static float distTotal = 0.0;
     static float distRobot = 0.0;
     float arcCercleAngle = finalOrientation - position.orientation;
@@ -525,7 +525,7 @@ float noNan(float value)
     }
     else
     {
-      if((xFinal - position.x == 0) && !(abs(fmod((finalOrientation - position.orientation), 2*M_PI)) == M_PI/2))
+      if((xFinal - position.x == 0) && !((abs(finalOrientation - position.orientation)) == M_PI/2))
       {
         float milieu = (yFinal - position.y)/2;
         float slope2 = tan(finalOrientation);
@@ -535,7 +535,7 @@ float noNan(float value)
       }
       else
       {
-        if((yFinal - position.y == 0) && !(abs(fmod((finalOrientation - position.orientation), 2*M_PI)) == M_PI/2))
+        if((yFinal - position.y == 0) && !(abs(finalOrientation - position.orientation) == M_PI/2))
         {
           float milieu = (xFinal - position.x)/2;
           float slope2 = tan(finalOrientation);
@@ -545,7 +545,7 @@ float noNan(float value)
         }
         else
         {
-          if((abs(fmod((finalOrientation - position.orientation), 2*M_PI)) == M_PI/2) && !(yFinal - position.y == 0) && !(xFinal - position.x == 0))
+          if((abs(finalOrientation - position.orientation) == M_PI/2) && !(yFinal - position.y == 0) && !(xFinal - position.x == 0))
           {
             float slope1 = (yFinal-position.y)/(xFinal-position.x);
             double b1 = position.y + (yFinal - position.y)/2 + (position.x + (xFinal - position.x)/2) * (1/slope1);
@@ -561,7 +561,7 @@ float noNan(float value)
       dV = radiusToDV(radius, finalOrientation);
     }
     
-    if (arcCercleAngle == 0)
+    if (arcCercleAngle < 0.1 && arcCercleAngle > -0.1)
     {
       distRobot = sqrt(sq(xFinal - position.x) + sq(yFinal - position.y));
     }
@@ -574,10 +574,18 @@ float noNan(float value)
     {
       distTotal = distRobot;
     }
-
-    updatePIDMain(vitesse*distRobot/distTotal, dV);
+    float speed = 0.0;
+    if(distTotal == 0)
+    {
+      speed = 0.0;
+    }
+    else
+    {
+      speed = vitesse*distRobot/distTotal;
+    }
+    updatePIDMain(speed, dV);
     updatePos();
-
+    printData(arcCercleAngle, radius, distRobot, distTotal, speed, dV, position.x, position.y, position.orientation, 0);
     prevX = xFinal;
     prevY = yFinal;
     prevOrientation = finalOrientation;
@@ -728,7 +736,7 @@ void loop()
   delay(5);
   move(x, y, theta);
   //updatePIDMain(vitesse, 0);
-  //printPosition(0);
+  printPosition(0);
   
   
   /*if(position.x != y || position.y != y)
