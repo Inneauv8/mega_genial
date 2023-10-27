@@ -88,9 +88,9 @@ Classes</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
 Fonctions</h2></td></tr>
-<tr class="memitem:ac6099e79407c9c9a4e24998b02e725fb"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../db/d41/namespaceMOVE.html#ac6099e79407c9c9a4e24998b02e725fb">calculPID</a> (<a class="el" href="../../dd/d4f/structMOVE_1_1valeursPID.html">valeursPID</a> *incomingValues)</td></tr>
-<tr class="memdesc:ac6099e79407c9c9a4e24998b02e725fb"><td class="mdescLeft">&#160;</td><td class="mdescRight">Calcul la valeur du PID.  <a href="../../db/d41/namespaceMOVE.html#ac6099e79407c9c9a4e24998b02e725fb">Plus de détails...</a><br /></td></tr>
-<tr class="separator:ac6099e79407c9c9a4e24998b02e725fb"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a59c64eddddfaffee06caecfef681836b"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../db/d41/namespaceMOVE.html#a59c64eddddfaffee06caecfef681836b">calculPID</a> (<a class="el" href="../../dd/d4f/structMOVE_1_1valeursPID.html">valeursPID</a> *incomingValues, bool resetIOnZeroError)</td></tr>
+<tr class="memdesc:a59c64eddddfaffee06caecfef681836b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Calcul la valeur du PID.  <a href="../../db/d41/namespaceMOVE.html#a59c64eddddfaffee06caecfef681836b">Plus de détails...</a><br /></td></tr>
+<tr class="separator:a59c64eddddfaffee06caecfef681836b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a9362089fb419958f57e8dad952b26f66"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../db/d41/namespaceMOVE.html#a9362089fb419958f57e8dad952b26f66">noNan</a> (float value)</td></tr>
 <tr class="memdesc:a9362089fb419958f57e8dad952b26f66"><td class="mdescLeft">&#160;</td><td class="mdescRight">Retourne les distances parcourues en pouces par les moteurs.  <a href="../../db/d41/namespaceMOVE.html#a9362089fb419958f57e8dad952b26f66">Plus de détails...</a><br /></td></tr>
 <tr class="separator:a9362089fb419958f57e8dad952b26f66"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -130,6 +130,8 @@ Fonctions</h2></td></tr>
 <tr class="separator:a4c2535d28abd5a94e9dbaed21a4a62b3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae48861672ed878f1bc1b2191fc015e23"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../db/d41/namespaceMOVE.html#ae48861672ed878f1bc1b2191fc015e23">printPosition</a> (bool type)</td></tr>
 <tr class="separator:ae48861672ed878f1bc1b2191fc015e23"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac6099e79407c9c9a4e24998b02e725fb"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../db/d41/namespaceMOVE.html#ac6099e79407c9c9a4e24998b02e725fb">calculPID</a> (<a class="el" href="../../dd/d4f/structMOVE_1_1valeursPID.html">valeursPID</a> *incomingValues)</td></tr>
+<tr class="separator:ac6099e79407c9c9a4e24998b02e725fb"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:afa3858ba090b6dcda39c2f9bebfe2673"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../db/d41/namespaceMOVE.html#afa3858ba090b6dcda39c2f9bebfe2673">radiusToSpeedG</a> (double moveRadiusRobot, float finalOrientation)</td></tr>
 <tr class="separator:afa3858ba090b6dcda39c2f9bebfe2673"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af694e8acf878e1016fcd012466f67b36"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../db/d41/namespaceMOVE.html#af694e8acf878e1016fcd012466f67b36">radiusToSpeedD</a> (double moveRadiusRobot, float finalOrientation)</td></tr>
@@ -192,7 +194,7 @@ Variables</h2></td></tr>
 </div>
 </div>
 <a id="ac6099e79407c9c9a4e24998b02e725fb" name="ac6099e79407c9c9a4e24998b02e725fb"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ac6099e79407c9c9a4e24998b02e725fb">&#9670;&#160;</a></span>calculPID()</h2>
+<h2 class="memtitle"><span class="permalink"><a href="#ac6099e79407c9c9a4e24998b02e725fb">&#9670;&#160;</a></span>calculPID() <span class="overload">[1/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -203,6 +205,34 @@ Variables</h2></td></tr>
           <td class="paramtype"><a class="el" href="../../dd/d4f/structMOVE_1_1valeursPID.html">valeursPID</a> *&#160;</td>
           <td class="paramname"><em>incomingValues</em></td><td>)</td>
           <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a59c64eddddfaffee06caecfef681836b" name="a59c64eddddfaffee06caecfef681836b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a59c64eddddfaffee06caecfef681836b">&#9670;&#160;</a></span>calculPID() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">float MOVE::calculPID </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="../../dd/d4f/structMOVE_1_1valeursPID.html">valeursPID</a> *&#160;</td>
+          <td class="paramname"><em>incomingValues</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>resetIOnZeroError</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
         </tr>
       </table>
 </div><div class="memdoc">
