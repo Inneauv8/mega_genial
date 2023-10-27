@@ -72,16 +72,24 @@ namespace MOVE {
    *
    * @param incomingValues PID values
    */
-  void calculPID(valeursPID *incomingValues)
+  float calculPID(valeursPID *incomingValues, bool resetIOnZeroError)
   {
-      incomingValues->dt = (millis() - incomingValues->Ti)/1000.0;
-      float error = (incomingValues->Sp - incomingValues->Pv)*incomingValues->dt;
-      incomingValues->p = incomingValues->Kp * error;
-      incomingValues->i += incomingValues->Ki * (error*incomingValues->dt);
-      if (error == 0.0){incomingValues->i = 0.0;}
-      incomingValues->d = incomingValues->Kd * (error - incomingValues->Out) / incomingValues->dt;
-      incomingValues->Out += incomingValues->p + incomingValues->i + incomingValues->d;
-      incomingValues->Ti = millis();
+      // Calculate delta time
+      long startTime = millis();
+      float dt = (micros() - incomingValues->initialTime) * 0.000001f;
+
+      float error = (incomingValues->Sp - incomingValues->Pv) * dt;
+
+      float p = incomingValues->Kp * error;
+      incomingValues->integral += incomingValues->Ki * (error * dt);
+      float d = incomingValues->Kd * (error - incomingValues->Out) / dt;
+
+      if (error == 0.0 && resetIOnZeroError) {incomingValues->integral = 0.0;}
+
+      incomingValues->Out += p + incomingValues->integral + d;
+      incomingValues->initialTime = startTime;
+
+      return incomingValues->Out;
   }
  /**
    * @brief Retourne les distances parcourues en pouces par les moteurs
@@ -327,20 +335,14 @@ float noNan(float value)
     Serial.print(incomingValues->Ki);
     Serial.print("\t Kd : ");
     Serial.print(incomingValues->Kd);
-    Serial.print("\t Ti : ");
-    Serial.print(incomingValues->Ti);
-    Serial.print("\t dt : ");
-    Serial.print(incomingValues->dt);
-    Serial.print("\t Sp : ");
+    Serial.print("\t Initial Time : ");
+    Serial.print(incomingValues->initialTime);
+    Serial.print("\t Set Point : ");
     Serial.print(incomingValues->Sp);
-    Serial.print("\t Pv : ");
+    Serial.print("\t Process Value : ");
     Serial.print(incomingValues->Pv);
-    Serial.print("\t p : ");
-    Serial.print(incomingValues->p);
-    Serial.print("\t i : ");
-    Serial.print(incomingValues->i);
-    Serial.print("\t d : ");
-    Serial.print(incomingValues->d);
+    Serial.print("\t Integral : ");
+    Serial.print(incomingValues->integral);
     Serial.print("\t Out : ");
     Serial.println(incomingValues->Out);
     Serial.println();
