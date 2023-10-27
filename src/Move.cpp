@@ -89,24 +89,10 @@ namespace MOVE {
       const float epsilon = 0.0001f;
       // Calculate delta time
       long startTime = micros();
-<<<<<<< HEAD
-      float dt = float(micros() - incomingValues->initialTime) * 0.000001f;
-
-      float error = (incomingValues->Sp - incomingValues->Pv) * dt;
-
-      float p = incomingValues->Kp * error;
-      incomingValues->integral += incomingValues->Ki * (error * dt);
-      float d = incomingValues->Kd * (error - incomingValues->Out) / dt;
-
-      if (error == 0.0 && resetIOnZeroError) {incomingValues->integral = 0.0;}
-      printData(7, error, incomingValues->integral, d, dt , 0, 0, 0, 0, 0);
-      incomingValues->Out += p + incomingValues->integral + d;
-=======
       float dt = (micros() - incomingValues->initialTime) * 0.000001f;
->>>>>>> cde56f855f52a035b12f35e8e73c7b70c3361965
       incomingValues->initialTime = startTime;
 
-      if (fabs(epsilon) > epsilon) {
+      if (fabs(dt) > epsilon && !isnan(incomingValues->Sp) && !isnan(incomingValues->Pv)) {
         float error = (incomingValues->Sp - incomingValues->Pv) * dt;
 
         float p = incomingValues->Kp * error;
@@ -114,8 +100,10 @@ namespace MOVE {
         float d = incomingValues->Kd * (error - incomingValues->Out) / dt;
 
         if (error == 0.0 && resetIOnZeroError) {incomingValues->integral = 0.0;}
-        printData(7, error, incomingValues->integral, d, 0 , 0, 0, 0, 0, 0);
+
         incomingValues->Out += p + incomingValues->integral + d;
+      } else {
+        Serial.println("DEBUG - Invalid value fed to PID or delta time is too small");
       }
 
       return incomingValues->Out;
@@ -379,7 +367,7 @@ float noNan(float value)
     pidG.Sp = Sp;
     pidG.Pv = speedG();
     calculPID(&pidG);
-    printData(13, speedToVoltage(0, pidG.Out), pidG.Out, 0, 0, 0, 0, 0, 0, 0);
+    //printData(13, speedToVoltage(0, pidG.Out), pidG.Out, 0, 0, 0, 0, 0, 0, 0);
     MOTOR_SetSpeed(0, (speedToVoltage(0, pidG.Out)));
     //showDataPID(&pidG);
   }
@@ -593,7 +581,6 @@ float noNan(float value)
     prevX = xFinal;
     prevY = yFinal;
     prevOrientation = finalOrientation;
-    printData(5, arcCercleAngle, radius, distRobot, dV, (vitesse * distRobot / distTotal), 0, 0, 0, 0);
 
     /*float oldTime = 0.0;
     float dt = millis() - oldTime;
@@ -741,7 +728,7 @@ void loop()
   delay(5);
   move(x, y, theta);
   //updatePIDMain(vitesse, 0);
-  printPosition(0);
+  //printPosition(0);
   
   
   /*if(position.x != y || position.y != y)
