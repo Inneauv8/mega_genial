@@ -23,7 +23,7 @@ namespace MOVE {
   //  STRUCTURES ET UNIONS
   // *************************************************************************************************
   struct valeursPID {
-    valeursPID() : Kp(0.0), Ki(0.0), Kd(0.0), initialTime(0), Sp(0.0), Pv(0.0) {}
+    valeursPID() : Kp(0.0), Ki(0.0), Kd(0.0), initialTime(0), Sp(0.0), Pv(0.0), integral(0.0) {}
     float Kp;  // Constante proportionnelle
     float Ki;  // Constante intégrale
     float Kd;  // Constante dérivée

@@ -78,7 +78,7 @@ namespace MOVE {
     float data[10] = {one, two, three, four, five, six, seven, eight, nine, ten};
     for(int i = 0; i < 10; i++)
     {
-      Serial.print(data[i], 6);
+      Serial.print(data[i], 10);
       Serial.print("\t");
     }
     Serial.println();
@@ -88,7 +88,7 @@ namespace MOVE {
   {
       // Calculate delta time
       long startTime = micros();
-      float dt = (micros() - incomingValues->initialTime) * 0.000001f;
+      float dt = float(micros() - incomingValues->initialTime) * 0.000001f;
 
       float error = (incomingValues->Sp - incomingValues->Pv) * dt;
 
@@ -97,7 +97,7 @@ namespace MOVE {
       float d = incomingValues->Kd * (error - incomingValues->Out) / dt;
 
       if (error == 0.0 && resetIOnZeroError) {incomingValues->integral = 0.0;}
-      printData(7, error, incomingValues->integral, d, 0 , 0, 0, 0, 0, 0);
+      printData(7, error, incomingValues->integral, d, dt , 0, 0, 0, 0, 0);
       incomingValues->Out += p + incomingValues->integral + d;
       incomingValues->initialTime = startTime;
 
@@ -709,11 +709,6 @@ void setup(){
 void loop()
 {
  
-    
- 
-
-  
-  
  if (ROBUS_IsBumper(0))
   {
     //dV = 0.0;
@@ -726,12 +721,12 @@ void loop()
   
   
   }
-
+  delay(5);
   move(x, y, theta);
   //updatePIDMain(vitesse, 0);
   printPosition(0);
   
-  delay(5);
+  
   /*if(position.x != y || position.y != y)
   {
     move(x, y, theta);
