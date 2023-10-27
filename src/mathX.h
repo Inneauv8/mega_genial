@@ -3,6 +3,7 @@
 //
 
 #include <math.h>
+#include "Arduino.h"
 
 #ifndef MATHX_H
 #define MATHX_H
@@ -19,12 +20,6 @@ double map(double value, double maxValue, double maxResult);
 double clamp(double value, double minValue, double maxValue);
 
 double wrap(double value, double minValue, double maxValue);
-
-double min(double x, double y);
-
-double max(double x, double y);
-
-double abs(double value);
 
 double smallestDifferenceInWrap(double value, double targetValue, int minValue, int maxValue);
 

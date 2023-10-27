@@ -120,7 +120,7 @@ double wrap(double value, double minValue, double maxValue) {
 
     float interval = trueMax - trueMin;
 
-    while (value > trueMax) {
+    while (value >= trueMax) {
         value -= interval;
     }
 
@@ -129,44 +129,6 @@ double wrap(double value, double minValue, double maxValue) {
     }
 
     return value;
-}
-
-/**
- * @brief Get the minimum of two values.
- *
- * This function returns the smaller of two given values.
- *
- * @param x The first value.
- * @param y The second value.
- * @return The minimum value of the two inputs.
- */
-double min(double x, double y) {
-    return x < y ? x : y;
-}
-
-/**
- * @brief Get the maximum of two values.
- *
- * This function returns the larger of two given values.
- *
- * @param x The first value.
- * @param y The second value.
- * @return The maximum value of the two inputs.
- */
-double max(double x, double y) {
-    return x > y ? x : y;
-}
-
-/**
- * @brief Calculate the absolute value of a number.
- *
- * This function returns the absolute (non-negative) value of the input number.
- *
- * @param value The input number.
- * @return The absolute value of the input number.
- */
-double abs(double value) {
-    return value < 0 ? -value : value;
 }
 
 /**
