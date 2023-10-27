@@ -421,7 +421,7 @@ float noNan(float value)
     //showDataPID(&pidSpeed);
   }
   
-  float radiusToSpeedG(double moveRadiusRobot, float finalOrientation)
+  /*float radiusToSpeedG(double moveRadiusRobot, float finalOrientation)
   {
     float initialOrientation = position.orientation;
     float arcCercleAngle = finalOrientation - initialOrientation;
@@ -433,11 +433,11 @@ float noNan(float value)
     {
       return vitesse;
     }
-    if (arcCercleAngle < 1)
+    if (arcCercleAngle < 0.1)
     {
       return speedSmall;
     }
-    else //(arcCercleAngle > 0)
+    else //(arcCercleAngle > 0.1)
     {
       return speedBig;
     }
@@ -452,22 +452,77 @@ float noNan(float value)
     double speedBig = (moveRadiusRobot + WHEEL_BASE_DIAMETER/2)*noNan(abs(arcCercleAngle)/time);
     double speedSmall= (moveRadiusRobot - WHEEL_BASE_DIAMETER/2)*noNan(abs(arcCercleAngle)/time);
     
-    if (arcCercleAngle < 1 && arcCercleAngle > -1)
+    if (arcCercleAngle < 0.1 && arcCercleAngle > -0.1)
     {
       return vitesse;
     }
-    if (arcCercleAngle > 1)
+    if (arcCercleAngle > 0.1)
     {
       return speedSmall;
     }
-    else //(arcCercleAngle < 0)
+    else //(arcCercleAngle < 0.1)
     {
       return speedBig;
     }
+  }*/
+
+  float radiusToDV(double moveRadiusRobot, float finalOrientation)
+  {
+    float initialOrientation = position.orientation;
+    float arcCercleAngle = finalOrientation - initialOrientation;
+    float dV = 0.0;
+    double distRobot = moveRadiusRobot*abs(arcCercleAngle);
+    float time = noNan(distRobot/vitesse);
+    double speedBig = (moveRadiusRobot + WHEEL_BASE_DIAMETER/2)*noNan(abs(arcCercleAngle)/time);
+    double speedSmall= (moveRadiusRobot - WHEEL_BASE_DIAMETER/2)*noNan(abs(arcCercleAngle)/time);
+    
+    if (arcCercleAngle < 0.1 && arcCercleAngle > -0.1)
+    {
+      return 0.0;
+    }
+    if (arcCercleAngle > 0.1)
+    {
+      dV = speedSmall - speedBig;
+    }
+    else //(arcCercleAngle < 0.1)
+    {
+      dV = speedBig - speedSmall; 
+    }
+    return dV;
   }
 
   void move(float xFinal, float yFinal, float finalOrientation)
   {
+    static float prevX = 0.138422151245;
+    static float prevY = 0.9453893654;
+    static float prevOrientation = 0.786534354854243542;
+    static float distTotal = 0.0;
+    static float distRobot = 0.0;
+    double radiusRobot = moveRadius(xFinal, yFinal, finalOrientation);
+    float dV = radiusToDV(radiusRobot, finalOrientation);
+    float arcCercleAngle = finalOrientation - position.orientation;
+
+    if (arcCercleAngle == 0)
+    {
+      distRobot = sqrt(sq(xFinal - position.x) + sq(yFinal - position.y));
+    }
+    else
+    {
+      distRobot = radiusRobot*abs(arcCercleAngle);
+    }
+    
+    if(xFinal != prevX || yFinal != prevY || finalOrientation != prevOrientation)
+    {
+      distTotal = distRobot;
+    }
+
+    updatePIDMain((vitesse * distRobot / distTotal), dV);
+    updatePos();
+
+    prevX = xFinal;
+    prevY = yFinal;
+    prevOrientation = finalOrientation;
+    
     /*float oldTime = 0.0;
     float dt = millis() - oldTime;
     float initialOrientation = position.orientation;
@@ -592,14 +647,22 @@ void setup(){
   ENCODER_Reset(0);
   ENCODER_Reset(1);
   updatePos();
+  float r = 3*WHEEL_BASE_DIAMETER/2;
+  theta = -M_PI;
+  
+  Serial.println(radiusToDV(r, theta));
+  
+  
 }
 
 void loop()
 {
+ 
+    
+ 
   
-  
-  MOTOR_SetSpeed(0, 0);
-  MOTOR_SetSpeed(1, 0);
+  //MOTOR_SetSpeed(0, 0);
+  //MOTOR_SetSpeed(1, 0);
 
   
   
