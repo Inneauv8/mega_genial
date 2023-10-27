@@ -87,7 +87,7 @@ namespace MOVE {
   float calculPID(valeursPID *incomingValues, bool resetIOnZeroError)
   {
       // Calculate delta time
-      long startTime = millis();
+      long startTime = micros();
       float dt = (micros() - incomingValues->initialTime) * 0.000001f;
 
       float error = (incomingValues->Sp - incomingValues->Pv) * dt;
