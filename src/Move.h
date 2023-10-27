@@ -23,19 +23,17 @@ namespace MOVE {
   //  STRUCTURES ET UNIONS
   // *************************************************************************************************
   struct valeursPID {
-    valeursPID() : Kp(0.0), Ki(0.0), Kd(0.0), Ti(0.0), dt(0.0), Sp(0.0), Pv(0.0) {}
+    valeursPID() : Kp(0.0), Ki(0.0), Kd(0.0), initialTime(0), Sp(0.0), Pv(0.0) {}
     float Kp;  // Constante proportionnelle
     float Ki;  // Constante intégrale
     float Kd;  // Constante dérivée
-    float Ti;  // Temps initial
-    float dt;  // Intervalle de temps pour le calcul d'intégrales et de dérivées
+    long initialTime;  // Temps initial
     float Sp;  // Set Point (Valeur voulue)
     float Pv;  // Process Value (Valeur réelle)
-    float p;   // Valeur proportionnelle
-    float i;   // Valeur intégrale
-    float d;   // Valeur dérivée
+    float integral;   // Valeur intégrale
     float Out; // Valeur de sortie
   };
+
 
   struct valeursDistance {
     float G;
