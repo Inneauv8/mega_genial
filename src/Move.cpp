@@ -86,20 +86,23 @@ namespace MOVE {
 
   float calculPID(valeursPID *incomingValues, bool resetIOnZeroError)
   {
+      const float epsilon = 0.0001f;
       // Calculate delta time
       long startTime = micros();
       float dt = (micros() - incomingValues->initialTime) * 0.000001f;
-
-      float error = (incomingValues->Sp - incomingValues->Pv) * dt;
-
-      float p = incomingValues->Kp * error;
-      incomingValues->integral += incomingValues->Ki * (error * dt);
-      float d = incomingValues->Kd * (error - incomingValues->Out) / dt;
-
-      if (error == 0.0 && resetIOnZeroError) {incomingValues->integral = 0.0;}
-      printData(7, error, incomingValues->integral, d, 0 , 0, 0, 0, 0, 0);
-      incomingValues->Out += p + incomingValues->integral + d;
       incomingValues->initialTime = startTime;
+
+      if (fabs(epsilon) > epsilon) {
+        float error = (incomingValues->Sp - incomingValues->Pv) * dt;
+
+        float p = incomingValues->Kp * error;
+        incomingValues->integral += incomingValues->Ki * (error * dt);
+        float d = incomingValues->Kd * (error - incomingValues->Out) / dt;
+
+        if (error == 0.0 && resetIOnZeroError) {incomingValues->integral = 0.0;}
+        printData(7, error, incomingValues->integral, d, 0 , 0, 0, 0, 0, 0);
+        incomingValues->Out += p + incomingValues->integral + d;
+      }
 
       return incomingValues->Out;
   }
