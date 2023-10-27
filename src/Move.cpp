@@ -72,6 +72,18 @@ namespace MOVE {
    *
    * @param incomingValues PID values
    */
+
+  void printData(float one, float two, float three, float four, float five, float six, float seven, float eight, float nine, float ten)
+  {
+    float data[10] = {one, two, three, four, five, six, seven, eight, nine, ten};
+    for(int i = 0; i < 10; i++)
+    {
+      Serial.print(data[i], 6);
+      Serial.print("\t");
+    }
+    Serial.println();
+  }
+
   float calculPID(valeursPID *incomingValues, bool resetIOnZeroError)
   {
       // Calculate delta time
@@ -85,7 +97,7 @@ namespace MOVE {
       float d = incomingValues->Kd * (error - incomingValues->Out) / dt;
 
       if (error == 0.0 && resetIOnZeroError) {incomingValues->integral = 0.0;}
-
+      printData(7, error, incomingValues->integral, d, 0 , 0, 0, 0, 0, 0);
       incomingValues->Out += p + incomingValues->integral + d;
       incomingValues->initialTime = startTime;
 
@@ -119,16 +131,7 @@ float noNan(float value)
     return value;
   }
 
-  void printData(float one, float two, float three, float four, float five, float six, float seven, float eight, float nine, float ten)
-  {
-    float data[10] = {one, two, three, four, five, six, seven, eight, nine, ten};
-    for(int i = 0; i < 10; i++)
-    {
-      Serial.print(data[i], 6);
-      Serial.print("\t");
-    }
-    Serial.println();
-  }
+  
 
 
 
@@ -573,7 +576,7 @@ float noNan(float value)
     prevX = xFinal;
     prevY = yFinal;
     prevOrientation = finalOrientation;
-    printData(arcCercleAngle, radius, distRobot, dV, (vitesse * distRobot / distTotal), 0, 0, 0, 0, 0);
+    printData(5, arcCercleAngle, radius, distRobot, dV, (vitesse * distRobot / distTotal), 0, 0, 0, 0);
 
     /*float oldTime = 0.0;
     float dt = millis() - oldTime;
