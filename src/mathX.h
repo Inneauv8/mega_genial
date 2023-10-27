@@ -26,4 +26,8 @@ double max(double x, double y);
 
 double abs(double value);
 
+double smallestDifferenceInWrap(double value, double targetValue, int minValue, int maxValue);
+
+double smallestAngleDifference(double angle, double targetAngle);
+
 #endif //MATHX_H

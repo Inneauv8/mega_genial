@@ -168,3 +168,50 @@ double max(double x, double y) {
 double abs(double value) {
     return value < 0 ? -value : value;
 }
+
+/**
+ * Calculate the smallest difference in a wrapped range.
+ *
+ * This function calculates the smallest difference between two values in a
+ * wrapped range, where the range is defined by minValue and maxValue. If the
+ * absolute difference is greater than half the interval, it adjusts the
+ * difference to ensure it's the smallest possible.
+ *
+ * @param value The first value.
+ * @param targetValue The second value.
+ * @param minValue The minimum value of the range.
+ * @param maxValue The maximum value of the range.
+ * @return The smallest difference between the two values.
+ */
+double smallestDifferenceInWrap(double value, double targetValue, int minValue, int maxValue) {
+    double trueMin = min(minValue, maxValue);
+    double trueMax = max(minValue, maxValue);
+
+    float interval = trueMax - trueMin;
+
+    value = wrap(value, trueMin, trueMax);
+    targetValue = wrap(targetValue, trueMin, trueMax);
+
+    float difference = targetValue - value;
+    const float absoluteDifferrence = abs(difference);
+
+    if (absoluteDifferrence > interval / 2.0) {
+        difference += difference < 0 ? interval : - interval;
+    }
+
+    return difference;
+}
+
+/**
+ * Calculate the smallest angle difference in a wrapped range.
+ *
+ * This function calculates the smallest angle difference between two angles
+ * in a wrapped range from -π to π.
+ *
+ * @param angle The first angle.
+ * @param targetAngle The second angle.
+ * @return The smallest angle difference between the two angles.
+ */
+double smallestAngleDifference(double angle, double targetAngle) {
+    return smallestDifferenceInWrap(angle, targetAngle, -M_PI, M_PI);
+}
