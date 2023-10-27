@@ -1,0 +1,170 @@
+// @file
+// Created by Mathieu Durand on 2023-10-27.
+//
+
+#include "mathX.h"
+
+/**
+ * @brief Calculate the squared distance between two points (x1, y1) and (x2, y2).
+ *
+ * This function computes the squared Euclidean distance between two points in 2D space.
+ *
+ * @param x1 The x-coordinate of the first point.
+ * @param y1 The y-coordinate of the first point.
+ * @param x2 The x-coordinate of the second point.
+ * @param y2 The y-coordinate of the second point.
+ * @return The squared distance between the two points.
+ */
+double sqDist(double x1, double y1, double x2, double y2) {
+    return sqDist(x2 - x1, y2 - y1);
+}
+
+/**
+ * @brief Calculate the squared distance from the origin to a point (x, y).
+ *
+ * This function computes the squared Euclidean distance from the origin to a point in 2D space.
+ *
+ * @param x The x-coordinate of the point.
+ * @param y The y-coordinate of the point.
+ * @return The squared distance from the origin to the point.
+ */
+double sqDist(double x, double y) {
+    return x * x + y * y;
+}
+
+/**
+ * @brief Calculate the Euclidean distance between two points (x1, y1) and (x2, y2).
+ *
+ * This function computes the Euclidean distance between two points in 2D space.
+ *
+ * @param x1 The x-coordinate of the first point.
+ * @param y1 The y-coordinate of the first point.
+ * @param x2 The x-coordinate of the second point.
+ * @param y2 The y-coordinate of the second point.
+ * @return The Euclidean distance between the two points.
+ */
+double dist(double x1, double y1, double x2, double y2) {
+    return sqrt(sqDist(x1, y1, x2, y2));
+}
+
+/**
+ * @brief Calculate the Euclidean distance from the origin to a point (x, y).
+ *
+ * This function computes the Euclidean distance from the origin to a point in 2D space.
+ *
+ * @param x The x-coordinate of the point.
+ * @param y The y-coordinate of the point.
+ * @return The Euclidean distance from the origin to the point.
+ */
+double dist(double x, double y) {
+    return sqrt(sqDist(x, y));
+}
+
+/**
+ * @brief Map a value from one range to another.
+ *
+ * This function maps a value from one range to another using linear interpolation.
+ *
+ * @param value The value to be mapped.
+ * @param minValue The minimum value of the original range.
+ * @param maxValue The maximum value of the original range.
+ * @param minResult The minimum value of the target range.
+ * @param maxResult The maximum value of the target range.
+ * @return The mapped value within the target range.
+ */
+double map(double value, double minValue, double maxValue, double minResult, double maxResult) {
+    return ((value - min(minValue, maxValue)) * abs(maxResult - minResult)) / abs(maxValue - minValue) + min(minResult, maxResult);
+}
+
+/**
+ * @brief Map a value from the range [0, maxValue] to another range [0, maxResult].
+ *
+ * This function maps a value from the range [0, maxValue] to another range [0, maxResult] using linear interpolation.
+ *
+ * @param value The value to be mapped.
+ * @param maxValue The maximum value of the original range.
+ * @param maxResult The maximum value of the target range.
+ * @return The mapped value within the target range.
+ */
+double map(double value, double maxValue, double maxResult) {
+    return map(value, 0, maxValue, 0, maxResult);
+}
+
+/**
+ * @brief Clamp a value within a specified range.
+ *
+ * This function clamps a value to be within the specified range.
+ *
+ * @param value The value to be clamped.
+ * @param minValue The minimum allowed value.
+ * @param maxValue The maximum allowed value.
+ * @return The clamped value within the specified range.
+ */
+double clamp(double value, double minValue, double maxValue) {
+    return min(max(value, minValue), maxValue);
+}
+
+/**
+ * @brief Wrap a value within a specified range.
+ *
+ * This function wraps a value to be within the specified range, creating a cyclic behavior.
+ *
+ * @param value The value to be wrapped.
+ * @param minValue The minimum allowed value.
+ * @param maxValue The maximum allowed value.
+ * @return The wrapped value within the specified range.
+ */
+double wrap(double value, double minValue, double maxValue) {
+    double trueMin = min(minValue, maxValue);
+    double trueMax = max(minValue, maxValue);
+
+    float interval = trueMax - trueMin;
+
+    while (value > trueMax) {
+        value -= interval;
+    }
+
+    while(value < trueMin) {
+        value += interval;
+    }
+
+    return value;
+}
+
+/**
+ * @brief Get the minimum of two values.
+ *
+ * This function returns the smaller of two given values.
+ *
+ * @param x The first value.
+ * @param y The second value.
+ * @return The minimum value of the two inputs.
+ */
+double min(double x, double y) {
+    return x < y ? x : y;
+}
+
+/**
+ * @brief Get the maximum of two values.
+ *
+ * This function returns the larger of two given values.
+ *
+ * @param x The first value.
+ * @param y The second value.
+ * @return The maximum value of the two inputs.
+ */
+double max(double x, double y) {
+    return x > y ? x : y;
+}
+
+/**
+ * @brief Calculate the absolute value of a number.
+ *
+ * This function returns the absolute (non-negative) value of the input number.
+ *
+ * @param value The input number.
+ * @return The absolute value of the input number.
+ */
+double abs(double value) {
+    return value < 0 ? -value : value;
+}
