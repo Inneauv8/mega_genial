@@ -1,5 +1,5 @@
 var searchData=
 [
-  ['move_0',['move',['../db/d41/namespaceMOVE.html#a4c2535d28abd5a94e9dbaed21a4a62b3',1,'MOVE']]],
-  ['moveradius_1',['moveRadius',['../db/d41/namespaceMOVE.html#a9fe030616c86c21206860494198be947',1,'MOVE']]]
+  ['nonan_0',['noNan',['../db/d41/namespaceMOVE.html#a9362089fb419958f57e8dad952b26f66',1,'MOVE']]],
+  ['nozero_1',['noZero',['../db/d41/namespaceMOVE.html#a6517d52ce576ae7e9ed2c5cf0998cb41',1,'MOVE']]]
 ];

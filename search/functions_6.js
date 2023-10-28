@@ -1,6 +1,5 @@
 var searchData=
 [
-  ['radiustodv_0',['radiusToDV',['../db/d41/namespaceMOVE.html#ab95312698e3630a56761473bedc9853d',1,'MOVE']]],
-  ['radiustospeedd_1',['radiusToSpeedD',['../db/d41/namespaceMOVE.html#af694e8acf878e1016fcd012466f67b36',1,'MOVE']]],
-  ['radiustospeedg_2',['radiusToSpeedG',['../db/d41/namespaceMOVE.html#afa3858ba090b6dcda39c2f9bebfe2673',1,'MOVE']]]
+  ['showdatapid_0',['showDataPID',['../db/d41/namespaceMOVE.html#a315e036cd760b1e3d9320732fc4f7137',1,'MOVE']]],
+  ['speedtovoltage_1',['speedToVoltage',['../db/d41/namespaceMOVE.html#a6dc94d29c95a22759d8046d06361f99e',1,'MOVE']]]
 ];
