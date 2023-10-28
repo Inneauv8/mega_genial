@@ -7,7 +7,10 @@ Date de création : 17/10/2023
 #ifndef MOVE_H
 #define MOVE_H
 
+#include <float.h>
+
 #include <math.h>
+#include <mathX.h>
 
 namespace MOVE {
   // *************************************************************************************************
@@ -36,8 +39,8 @@ namespace MOVE {
 
 
   struct valeursDistance {
-    float G;
-    float D;
+    float Left;
+    float Right;
   };
 
   struct posRobot {
@@ -56,8 +59,8 @@ namespace MOVE {
 
   float calculPID(valeursPID *incomingValues, bool resetIOnZeroError = true);
   void updatePos();
-  float speedG();
-  float speedD();
+  float computeRightMotorSpeed();
+  float computeLeftMotorSpeed();
   float averageSpeedG();
   float averageSpeedD();
   float speedToVoltage(bool motor, float speed);

@@ -68,11 +68,21 @@ namespace MOVE {
   /* VIDE */
   
   /**
-   * @brief Calcul la valeur du PID
+   * @brief Print an array of 10 floating-point numbers.
    *
-   * @param incomingValues PID values
+   * This function prints the given array of 10 floating-point numbers to the serial port.
+   *
+   * @param[in] one The first number.
+   * @param[in] two The second number.
+   * @param[in] three The third number.
+   * @param[in] four The fourth number.
+   * @param[in] five The fifth number.
+   * @param[in] six The sixth number.
+   * @param[in] seven The seventh number.
+   * @param[in] eight The eighth number.
+   * @param[in] nine The ninth number.
+   * @param[in] ten The tenth number.
    */
-
   void printData(float one, float two, float three, float four, float five, float six, float seven, float eight, float nine, float ten)
   {
     float data[10] = {one, two, three, four, five, six, seven, eight, nine, ten};
@@ -84,6 +94,16 @@ namespace MOVE {
     Serial.println();
   }
 
+  /**
+   * @brief Function to calculate the PID values and control the motors.
+   *
+   * This function takes PID values and controls the motors based on the error
+   * between the set point (Sp) and the process variable (Pv).
+   *
+   * @param[in] incomingValues PID values.
+   * @param[in] resetIOnZeroError Flag to reset the integral term when error is zero.
+   * @return The calculated control output.
+   */
   float calculPID(valeursPID *incomingValues, bool resetIOnZeroError)
   {
       const float epsilon = 0.0001f;
@@ -108,6 +128,7 @@ namespace MOVE {
 
       return incomingValues->Out;
   }
+
  /**
    * @brief Retourne les distances parcourues en pouces par les moteurs
    *
@@ -118,52 +139,41 @@ namespace MOVE {
     Distance.G = pulseToDist*float(ENCODER_Read(0));
     Distance.D = pulseToDist*float(ENCODER_Read(1));
   }*/
-float noNan(float value)
+
+  float noNan(float value)
   {
-    if (value != value)
-    {
-      return 100000000;
-    }
-    return value;
+    return isnan(value) ? FLT_MAX : value;
   }
 
   float noZero(float value)
   {
-    if (value == 0)
-    {
-      return 0.000001;
-    }
-    return value;
+    return value == 0 ? FLT_MIN : value;
   }
 
-  
-
-
-
-  float distanceMoyenne()
+  float averageDistance()
   {
-    return (Distance.D+Distance.G)/2;
+    return (Distance.Right + Distance.Left) / 2;
   }
 
   float correctAngle(float angle)
   {
-    int correction = angle/(2*M_PI);
+    int initialAngle = angle;
     if(angle < -M_PI)
-      {
-        angle -= correction*2*M_PI;
-        Serial.print("here");
-      }
-	  if(angle > M_PI)
-      {
-        angle -= correction*2*M_PI;
-        Serial.print("or here");
-      }
-    else
     {
-      return angle;
-    }
+      angle -= initialAngle;
+      Serial.print("here");
+    } else if(angle > M_PI)
+    {
+      angle -= initialAngle;
+      Serial.print("or here");
+    };
+
+    return angle;
   }
 
+   /**
+   * @brief Function to update the robot's position based on encoder readings.
+   */
   void updatePos()
   {
 
@@ -194,7 +204,8 @@ float noNan(float value)
     }
 
     position.orientation += ka * angle;
-    position.orientation = correctAngle(position.orientation);
+    position.orientation = wrap(position.orientation, -M_PI, M_PI);
+    
     position.x += kx * ((radiusRobot * (cos(position.orientation) - cos(position.orientation-angle))));
     position.y += radiusRobot * (sin(position.orientation) - sin(position.orientation-angle));
 
@@ -203,7 +214,7 @@ float noNan(float value)
     
   }
 
-  float speedG()
+  float computeRightMotorSpeed()
   {
     
     static float past = 0.0;
@@ -219,7 +230,7 @@ float noNan(float value)
     return speedMotor;
   }
 
-  float speedD()
+  float computeLeftMotorSpeed()
     {
       
       static float past = 0.0;
@@ -251,7 +262,7 @@ float noNan(float value)
         average[i - 1] = average[i];
       }
 
-      average[averageSize - 1] = speedD();
+      average[averageSize - 1] = computeLeftMotorSpeed();
     return sum;
   }
 
@@ -271,7 +282,7 @@ float noNan(float value)
         average[i - 1] = average[i];
       }
 
-      average[averageSize - 1] = speedG();
+      average[averageSize - 1] = computeRightMotorSpeed();
     return sum;
   }
 
@@ -365,7 +376,7 @@ float noNan(float value)
     pidG.Kd = 0.0;
 
     pidG.Sp = Sp;
-    pidG.Pv = speedG();
+    pidG.Pv = computeRightMotorSpeed();
     calculPID(&pidG);
     //printData(13, speedToVoltage(0, pidG.Out), pidG.Out, 0, 0, 0, 0, 0, 0, 0);
     MOTOR_SetSpeed(0, (speedToVoltage(0, pidG.Out)));
@@ -380,13 +391,21 @@ float noNan(float value)
     pidD.Kd = 0.0;
 
     pidD.Sp = Sp;
-    pidD.Pv = speedD();
+    pidD.Pv = computeLeftMotorSpeed();
     calculPID(&pidD);
     MOTOR_SetSpeed(1, (speedToVoltage(1, pidD.Out)));
     //showDataPID(&pidD);
   }
 
-
+  /**
+   * @brief Update the robot's movement using a PID control system.
+   *
+   * This function updates the robot's movement by using a PID (Proportional-Integral-Derivative) control system.
+   * It adjusts the left and right motor speeds to achieve the desired overall speed (`speed`) and the rate of change in speed (`dV`).
+   *
+   * @param[in] speed The desired overall speed for the robot's movement.
+   * @param[in] dV The desired rate of change in speed (acceleration or deceleration).
+   */
   void updatePIDMain(float speed, float dV)
   {
     static struct valeursPID pidSpeed = {};
@@ -396,14 +415,8 @@ float noNan(float value)
 
     static float speedL;
     static float speedR;
-    speedL = speedG();
-    speedR = speedD();
-    //float pv;
-    //Ancien code
-    //pidSpeed.Sp = (speedG() - speedD())*pidSpeed.dt;
-    //pidSpeed.Pv = (ENCODER_Read(0) - ENCODER_Read(1));
-    //calculPID(&pidSpeed);
-    //float correctSpeed = pidSpeed.Out / (2*pidSpeed.dt);
+    speedL = computeRightMotorSpeed();
+    speedR = computeLeftMotorSpeed();
 
     //Test SH
     pidSpeed.Sp = dV;
@@ -419,20 +432,9 @@ float noNan(float value)
     {
       speed = -30 - abs(pidSpeed.Out / 2);
     }
-
-    /*Serial.print(speedL);
-    Serial.print("\t");
-    Serial.print(speedR);
-    Serial.print("\t");
-    Serial.print(pidSpeed.Pv);
-    Serial.print("\t");
-    Serial.println(pidSpeed.Out);*/
     
     updatePIDG(speed + (pidSpeed.Out / 2));
     updatePIDD(speed - (pidSpeed.Out / 2));
-
-    //Serial.print(pidSpeed.Out, pidSpeed.Sp, pidSpeed.Pv);
-    //showDataPID(&pidSpeed);
   }
   
   /*float radiusToSpeedG(double moveRadiusRobot, float finalOrientation)
@@ -480,6 +482,17 @@ float noNan(float value)
     }
   }*/
 
+  /**
+   * @brief Calculate the rate of change in speed (dV) required for a given move radius and final orientation.
+   *
+   * This function calculates the rate of change in speed (dV) needed to achieve a specific move radius and final orientation for the robot's movement.
+   * It considers the robot's initial orientation, the angle to the final orientation, and the move radius to determine the required dV.
+   *
+   * @param[in] moveRadiusRobot The move radius for the robot's movement.
+   * @param[in] finalOrientation The desired final orientation for the robot's movement.
+   * 
+   * @return The calculated rate of change in speed (dV) to achieve the specified move radius and orientation.
+   */
   float radiusToDV(double moveRadiusRobot, float finalOrientation)
   {
     float initialOrientation = position.orientation;
@@ -507,6 +520,15 @@ float noNan(float value)
     
   }
 
+  /**
+   * @brief Move the robot to a specified position and orientation.
+   *
+   * This function controls the robot's movement to reach the desired final position and orientation.
+   *
+   * @param[in] xFinal Final X position.
+   * @param[in] yFinal Final Y position.
+   * @param[in] finalOrientation Final orientation in radians.
+   */
   void move(float xFinal, float yFinal, float finalOrientation)
   {
 
@@ -527,21 +549,22 @@ float noNan(float value)
     {
       if((xFinal - position.x == 0) && !((abs(finalOrientation - position.orientation)) == M_PI/2))
       {
-        float milieu = (yFinal - position.y)/2;
+        float middle = (yFinal - position.y)/2;
         float slope2 = tan(finalOrientation);
         float b2 = yFinal + xFinal/slope2;
-        float centerX = -slope2 * (milieu - b2);
-        radius = sqrt(sq(centerX - xFinal) + sq(milieu - yFinal));
+        float centerX = -slope2 * (middle - b2);
+        radius = dist(xFinal, yFinal, centerX, middle);
       }
       else
       {
         if((yFinal - position.y == 0) && !(abs(finalOrientation - position.orientation) == M_PI/2))
         {
-          float milieu = (xFinal - position.x)/2;
+          float middle = (xFinal - position.x)/2;
           float slope2 = tan(finalOrientation);
           float b2 = yFinal + xFinal/slope2;
-          float centerY = -slope2 * (milieu - b2);
-          radius = sqrt(sq(milieu - xFinal) + sq(centerY - yFinal));
+          float centerY = -slope2 * (middle - b2);
+
+          radius = dist(xFinal, yFinal, middle, centerY);;
         }
         else
         {
@@ -550,7 +573,7 @@ float noNan(float value)
             float slope1 = (yFinal-position.y)/(xFinal-position.x);
             double b1 = position.y + (yFinal - position.y)/2 + (position.x + (xFinal - position.x)/2) * (1/slope1);
             float centerY = slope1 * xFinal + b1;
-            radius = sqrt(sq(xFinal - xFinal) + sq(centerY - yFinal));
+            radius = dist(xFinal, yFinal, xFinal, centerY);;
           }
           else
           {
@@ -563,11 +586,11 @@ float noNan(float value)
     
     if (arcCercleAngle < 0.1 && arcCercleAngle > -0.1)
     {
-      distRobot = sqrt(sq(xFinal - position.x) + sq(yFinal - position.y));
+      distRobot = dist(position.x, position.y, xFinal, yFinal);
     }
     else
     {
-      distRobot = radius*abs(arcCercleAngle);
+      distRobot = radius * abs(arcCercleAngle);
     }
     
     if(xFinal != prevX || yFinal != prevY || finalOrientation != prevOrientation)
@@ -585,7 +608,7 @@ float noNan(float value)
     }
     updatePIDMain(speed, dV);
     updatePos();
-    printData(arcCercleAngle, radius, distRobot, distTotal, speed, dV, position.x, position.y, position.orientation, 0);
+    //printData(arcCercleAngle, radius, distRobot, distTotal, speed, dV, position.x, position.y, position.orientation, 0);
     prevX = xFinal;
     prevY = yFinal;
     prevOrientation = finalOrientation;
@@ -734,8 +757,8 @@ void loop()
   
   }
   delay(5);
-  move(x, y, theta);
-  //updatePIDMain(vitesse, 0);
+  //move(x, y, theta);
+  updatePIDMain(vitesse, radiusToDV(18, M_PI / 2));
   printPosition(0);
   
   
