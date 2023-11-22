@@ -55,7 +55,7 @@ bool isButtonPressed(int buttonPin, uint32_t debounceTime, int timeOut)
   }
   return lastDebounceButtonState;
 }
-*/
+
 
 //Test debounce no while.
 void updateButtonState(const int buttonPins[], const float buttonDebounceTimes[], int nbrButton)
@@ -89,4 +89,4 @@ void setup()
 void loop()
 {
   updateButtonState(buttonPins, buttonDebounceTimes, 1);
-}
+}*/
